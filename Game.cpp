@@ -1,10 +1,10 @@
 #include "debug.h"
 #include "Game.h"
 
-CGame * CGame::__instance = NULL;
+CGame* CGame::__instance = NULL;
 
 /*
-	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for 
+	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
 	rendering 2D images
 	- hWnd: Application window handle
 */
@@ -104,7 +104,6 @@ void CGame::Init(HWND hWnd)
 		10);
 	hr = spriteObject->SetProjectionTransform(&matProjection);
 
-
 	// Initialize the blend state for alpha drawing
 	D3D10_BLEND_DESC StateDesc;
 	ZeroMemory(&StateDesc, sizeof(D3D10_BLEND_DESC));
@@ -126,11 +125,12 @@ void CGame::Init(HWND hWnd)
 
 /*
 	Draw the whole texture or part of texture onto screen
-	NOTE: This function is OBSOLTED in this example. Use Sprite::Render instead 
+	NOTE: This function is very inefficient because it has to convert
+	from texture to sprite every time we need to draw it
 */
 void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 {
-	if (tex == NULL) return; 
+	if (tex == NULL) return;
 
 	int spriteWidth = 0;
 	int spriteHeight = 0;
@@ -140,7 +140,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 	// Set the sprite’s shader resource view
 	sprite.pTexture = tex->getShaderResourceView();
 
-	if (rect==NULL) 
+	if (rect == NULL)
 	{
 		// top-left location in U,V coords
 		sprite.TexCoord.x = 0;
@@ -183,7 +183,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 
 	// Scale the sprite to its correct width and height because by default, DirectX draws it with width = height = 1.0f 
 	D3DXMATRIX matScaling;
-	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight , 1.0f);
+	D3DXMatrixScaling(&matScaling, (FLOAT)spriteWidth, (FLOAT)spriteHeight, 1.0f);
 
 	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
@@ -192,7 +192,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect)
 }
 
 /*
-	Utility function to wrap D3DX10CreateTextureFromFileEx
+	Utility function to wrap D3DXCreateTextureFromFileEx
 */
 LPTEXTURE CGame::LoadTexture(LPCWSTR texturePath)
 {
@@ -254,10 +254,14 @@ LPTEXTURE CGame::LoadTexture(LPCWSTR texturePath)
 
 CGame::~CGame()
 {
-
+	pBlendStateAlpha->Release();			
+	spriteObject->Release();
+	pRenderTargetView->Release();
+	pSwapChain->Release();
+	pD3DDevice->Release();
 }
 
-CGame *CGame::GetInstance()
+CGame* CGame::GetInstance()
 {
 	if (__instance == NULL) __instance = new CGame();
 	return __instance;

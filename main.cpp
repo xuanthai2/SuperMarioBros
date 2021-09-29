@@ -1,60 +1,58 @@
 /* =============================================================
 	INTRODUCTION TO GAME PROGRAMMING SE102
 	
-	SAMPLE 01 - SKELETON CODE 
+	SAMPLE 02 - SPRITE AND ANIMATION
 
 	This sample illustrates how to:
 
-	1/ Re-organize introductory code to an initial skeleton for better scalability
-	2/ CGame is a singleton, playing a role of an "engine".
-	3/ CGameObject is an abstract class for all game objects
-	4/ CTexture is a wrapper class for ID3D10TEXTURE 
-	
-	NOTE: to create transparent background, download GIMP, then use Color to Alpha feature 
+		1/ Render a sprite (within a sprite sheet)
+		2/ How to manage sprites/animations in a game
+		3/ Enhance CGameObject with sprite animation
 ================================================================ */
 
-#include <windows.h>
+#include <Windows.h>
 #include <d3d10.h>
 #include <d3dx10.h>
-#include <vector>
 
 #include "debug.h"
 #include "Game.h"
-#include "GameObject.h"
+#include "Textures.h"
 
-#define WINDOW_CLASS_NAME L"Game Window"
-#define MAIN_WINDOW_TITLE L"01 - Skeleton"
-#define WINDOW_ICON_PATH L"brick.ico"
+#include "Sprite.h"
+#include "Sprites.h"
 
-#define TEXTURE_PATH_BRICK L"brick.png"
-#define TEXTURE_PATH_MARIO L"mario.png"
+#include "Animation.h"
+#include "Animations.h"
 
-#define TEXTURE_PATH_MISC L"misc.png"
 
-#define BACKGROUND_COLOR D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.0f)
+#include "Mario.h"
+
+
+#define WINDOW_CLASS_NAME L"SampleWindow"
+#define MAIN_WINDOW_TITLE L"02 - Sprite animation"
+#define WINDOW_ICON_PATH L"mario.ico"
+
+#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
+#define ID_TEX_MARIO 0
+#define ID_TEX_ENEMY 10
+#define ID_TEX_MISC 20
 
-using namespace std;
+#define TEXTURES_DIR L"textures"
+#define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario.png"
+#define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc.png"
+#define TEXTURE_PATH_ENEMIES TEXTURES_DIR "\\enemies.png"
 
 CMario *mario;
 #define MARIO_START_X 10.0f
-#define MARIO_START_Y 100.0f
+#define MARIO_START_Y 130.0f
 #define MARIO_START_VX 0.1f
-#define MARIO_START_VY 0.1f
 
-CBrick* bricklist[20];
 CBrick *brick;
-#define BRICK_X 0.0f
-#define BRICK_Y 120.0f
-#define BRICK_WIDTH 16.0f
-#define BRICK_HEIGHT 16.0f
-LPTEXTURE texMario = NULL;
-LPTEXTURE texBrick = NULL;
-LPTEXTURE texMisc = NULL;
 
-//vector<LPGAMEOBJECT> objects;  
+C2nd *Cnd;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -70,38 +68,90 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 /*
-	Load all game resources. In this example, create a brick object and mario object
+	Load all game resources 
+	In this example: load textures, sprites, animations and mario object
 */
 void LoadResources()
 {
-	CGame * game = CGame::GetInstance();
-	texBrick = game->LoadTexture(TEXTURE_PATH_BRICK);
-	texMario = game->LoadTexture(TEXTURE_PATH_MARIO);
-	texMisc = game->LoadTexture(TEXTURE_PATH_MISC);
+	CTextures * textures = CTextures::GetInstance();
+	
+	textures->Add(ID_TEX_MARIO, TEXTURE_PATH_MARIO);
+	//textures->Add(ID_ENEMY_TEXTURE, TEXTURE_PATH_ENEMIES, D3DCOLOR_XRGB(156, 219, 239));
+	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
 
-	// Load a sprite sheet as a texture to try drawing a portion of a texture. See function Render 
-	//texMisc = game->LoadTexture(MISC_TEXTURE_PATH);
+	textures->Add(ID_TEX_ENEMY, TEXTURE_PATH_ENEMIES);
 
-	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX, MARIO_START_VY, texMario);
-	brick = new CBrick(BRICK_X, BRICK_Y, texBrick);
-	float di = BRICK_X;
-	for (int i = 0; i < 20; i++)
-	{
-		di = di + BRICK_WIDTH;
-		bricklist[i] = new CBrick(di, BRICK_Y, texBrick);
-	}
+
+	CSprites * sprites = CSprites::GetInstance();
+	
+	LPTEXTURE texMario = textures->Get(ID_TEX_MARIO);
+
+	// readline => id, left, top, right 
+
+	sprites->Add(10001, 246, 154, 259, 181, texMario);
+	sprites->Add(10002, 275, 154, 290, 181, texMario);
+	sprites->Add(10003, 304, 154, 321, 181, texMario);
+
+	sprites->Add(10011, 186, 154, 200, 181, texMario);
+	sprites->Add(10012, 155, 154, 171, 181, texMario);
+	sprites->Add(10013, 125, 154, 141, 181, texMario);
+
+	LPTEXTURE texMisc = textures->Get(ID_TEX_MISC);
+	sprites->Add(20001, 300, 117, 316, 133, texMisc);
+	sprites->Add(20002, 318, 117, 334, 133, texMisc);
+	sprites->Add(20003, 336, 117, 352, 133, texMisc);
+	sprites->Add(20004, 354, 117, 370, 133, texMisc);
+
+
+	LPTEXTURE texEnemies = textures->Get(ID_TEX_ENEMY);
+	sprites->Add(300001,417,54,435,82,texEnemies);
+	sprites->Add(300002, 435, 53, 454, 82, texEnemies);
+	sprites->Add(300003, 456, 55, 473, 82, texEnemies);
+
+	sprites->Add(300011, 456, 187, 476, 215, texEnemies);
+	sprites->Add(300012, 437, 187, 457, 215, texEnemies);
+	sprites->Add(300013, 418, 187, 437, 215, texEnemies);
+
+
+	CAnimations * animations = CAnimations::GetInstance();
+	LPANIMATION ani;
+
+	ani = new CAnimation(100);
+	ani->Add(10001);
+	ani->Add(10002);
+	ani->Add(10003);
+	animations->Add(500, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(10011);
+	ani->Add(10012);
+	ani->Add(10013);
+	animations->Add(501, ani);
+
+	
+	ani = new CAnimation(100);
+	ani->Add(20001,1000);
+	ani->Add(20002);
+	ani->Add(20003);
+	ani->Add(20004);
+	animations->Add(510, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(300011,100);
+	ani->Add(300012);
+	ani->Add(300013);
+	animations->Add(512, ani);
+
+	ani = new CAnimation(100);
+	ani->Add(300001,100);
+	ani->Add(300002);
+	ani->Add(300003);
+	animations->Add(511, ani);
 	
 	
-	// objects.push_back(mario);
-	// for(i)		 
-	//		objects.push_back(new CGameObject(BRICK_X+i*BRICK_WIDTH,....);
-	//
-
-	//
-	// int x = BRICK_X;
-	// for(i)
-	//		... new CGameObject(x,.... 
-	//		x+=BRICK_WIDTH;
+	mario = new CMario(MARIO_START_X + 50.0f, MARIO_START_Y, MARIO_START_VX);
+	brick = new CBrick(100.0f, 100.0f);
+	Cnd = new C2nd(MARIO_START_X , MARIO_START_Y, MARIO_START_VX);
 }
 
 /*
@@ -110,24 +160,10 @@ void LoadResources()
 */
 void Update(DWORD dt)
 {
-	/*
-	for (int i=0;i<n;i++)
-		objects[i]->Update(dt);
-	*/
-
 	mario->Update(dt);
-	brick->Update(dt);
-	for (int i = 0; i < 20; i++) {
-		bricklist[i]->Update(dt);
-	}
-
-
-	DebugOutTitle(L"01 - Skeleton %0.1f, %0.1f", mario->GetX(), mario->GetY());
+	Cnd->Update(dt);
 }
 
-/*
-	Render a frame 
-*/
 void Render()
 {
 	CGame* g = CGame::GetInstance();
@@ -150,12 +186,11 @@ void Render()
 
 		brick->Render();
 		mario->Render();
-		for (int i = 0; i < 20; i++) {
-			bricklist[i]->Render();
-		}
-			
+		Cnd->Render();
+
 		// Uncomment this line to see how to draw a porttion of a texture  
-		g->Draw(10, 10, texMisc, 300, 117, 316, 133);
+		//g->Draw(10, 10, texMisc, 300, 117, 316, 133);
+
 
 		spriteHandler->End();
 		pSwapChain->Present(0, 0);
@@ -196,7 +231,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 			hInstance,
 			NULL);
 
-	if (!hWnd) 
+	if (!hWnd)
 	{
 		DWORD ErrCode = GetLastError();
 		DebugOut(L"[ERROR] CreateWindow failed! ErrCode: %d\nAt: %s %d \n", ErrCode, _W(__FILE__), __LINE__);
@@ -252,17 +287,15 @@ int WINAPI WinMain(
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPSTR lpCmdLine,
 	_In_ int nCmdShow
-) 
-{
+) {
 	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	CGame * game = CGame::GetInstance();
+	CGame *game = CGame::GetInstance();
 	game->Init(hWnd);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
-
-
 	LoadResources();
+
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
 
