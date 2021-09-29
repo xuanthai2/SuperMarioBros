@@ -51,6 +51,12 @@ CMario *mario;
 #define MARIO_START_VX 0.1f
 
 CBrick *brick;
+CNormalBrick* NormalBrick;
+#define BRICK_X 10.0f;
+#define BRICK_Y 120.0f;
+#define BRICK_WIDTH 16.0f;
+#define BRICK_HEIGHT 16.0f;
+CCloud* cloud;
 
 C2nd *Cnd;
 
@@ -112,6 +118,18 @@ void LoadResources()
 	sprites->Add(300012, 437, 187, 457, 215, texEnemies);
 	sprites->Add(300013, 418, 187, 437, 215, texEnemies);
 
+	LPTEXTURE texNormalBrick = textures->Get(ID_TEX_MISC);
+	sprites->Add(200001,299,134,317,152,texNormalBrick);
+	sprites->Add(200002,317,134,335,152,texNormalBrick);
+	sprites->Add(200003,335,134,353,152,texNormalBrick);
+	sprites->Add(200004,353,134,371,152,texNormalBrick);
+	sprites->Add(200005,371,134,389,152,texNormalBrick);
+
+	LPTEXTURE texCloud = textures->Get(ID_TEX_MISC);
+	sprites->Add(200011,389,116,407,132,texCloud);
+	sprites->Add(200012,407,116,425,132,texCloud);
+	sprites->Add(200013,425,116,444,132,texCloud);
+
 
 	CAnimations * animations = CAnimations::GetInstance();
 	LPANIMATION ani;
@@ -148,10 +166,28 @@ void LoadResources()
 	ani->Add(300003);
 	animations->Add(511, ani);
 	
-	
+
+	ani = new CAnimation(100);
+	ani->Add(200001);
+	//ani->Add(200002);
+	//ani->Add(200003);
+	//ani->Add(200004);
+	//ani->Add(200005);
+	animations->Add(509, ani);
+	///
+	ani = new CAnimation(100);
+	ani->Add(200011);
+	animations->Add(508, ani);
+	///
+
 	mario = new CMario(MARIO_START_X + 50.0f, MARIO_START_Y, MARIO_START_VX);
 	brick = new CBrick(100.0f, 100.0f);
 	Cnd = new C2nd(MARIO_START_X , MARIO_START_Y, MARIO_START_VX);
+	cloud = new CCloud(50.0f,10.0f);
+
+	//
+	NormalBrick = new CNormalBrick(7.0f,150.0f);
+	//
 }
 
 /*
@@ -187,6 +223,28 @@ void Render()
 		brick->Render();
 		mario->Render();
 		Cnd->Render();
+
+		//
+		cloud->Render();
+
+		//
+
+		//
+		float x = 9.0f;
+		float y = 150.0f;
+		for (int j = 0; j <= 3; j++) {
+			for (int i = 0; i < 19; i++)
+			{
+				NormalBrick = new CNormalBrick(x, y);
+				NormalBrick->Render();
+				x = x + 16.0f;
+			}
+			x = 9.0f;
+			y = y + 16.0f;
+		}
+
+		//
+	
 
 		// Uncomment this line to see how to draw a porttion of a texture  
 		//g->Draw(10, 10, texMisc, 300, 117, 316, 133);

@@ -9,7 +9,6 @@ C2nd::C2nd(float x, float y, float vx) :CGameObject(x, y)
 {
 	this->vx = vx;
 };
-
 void CMario::Update(DWORD dt)
 {
 	x += vx*dt;
@@ -44,6 +43,18 @@ void CMario::Render()
 void CBrick::Render() {
 
 	LPANIMATION ani = CAnimations::GetInstance()->Get(510);
+
+	ani->Render(x, y);
+
+}
+void CCloud::Render() {
+	LPANIMATION ani = CAnimations::GetInstance()->Get(508);
+
+	ani->Render(x, y);
+}
+void CNormalBrick::Render() {
+
+	LPANIMATION ani = CAnimations::GetInstance()->Get(509);
 
 	ani->Render(x, y);
 

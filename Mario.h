@@ -13,6 +13,18 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 };
+class CCloud : public CGameObject {
+public:
+	CCloud(float x, float y) : CGameObject(x, y) {}
+	void Render();
+	void Update(DWORD dt) {}
+};
+class CNormalBrick : public CGameObject {
+public:
+	CNormalBrick(float x, float y) : CGameObject(x, y) {}
+	void Render();
+	void Update(DWORD dt) {}
+};
 
 class CMario : public CGameObject
 {
