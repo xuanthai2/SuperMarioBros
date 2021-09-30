@@ -5,7 +5,7 @@ CMario::CMario(float x, float y, float vx):CGameObject(x, y)
 {
 	this->vx = vx;
 };
-C2nd::C2nd(float x, float y, float vx) :CGameObject(x, y)
+CEnemy::CEnemy(float x, float y, float vx) :CGameObject(x, y)
 {
 	this->vx = vx;
 };
@@ -52,6 +52,16 @@ void CCloud::Render() {
 
 	ani->Render(x, y);
 }
+void CCloud2::Render() {
+	LPANIMATION ani = CAnimations::GetInstance()->Get(507);
+
+	ani->Render(x, y);
+}
+void CCloud3::Render() {
+	LPANIMATION ani = CAnimations::GetInstance()->Get(506);
+
+	ani->Render(x, y);
+}
 void CNormalBrick::Render() {
 
 	LPANIMATION ani = CAnimations::GetInstance()->Get(509);
@@ -60,7 +70,7 @@ void CNormalBrick::Render() {
 
 }
 
-void C2nd::Update(DWORD dt)
+void CEnemy::Update(DWORD dt)
 {
 	x += vx * dt;
 
@@ -80,7 +90,7 @@ void C2nd::Update(DWORD dt)
 	}
 }
 
-void C2nd::Render()
+void CEnemy::Render()
 {
 	LPANIMATION ani;
 

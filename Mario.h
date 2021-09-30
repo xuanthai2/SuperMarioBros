@@ -19,6 +19,18 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 };
+class CCloud2 : public CGameObject {
+public:
+	CCloud2(float x, float y) : CGameObject(x, y) {}
+	void Render();
+	void Update(DWORD dt) {}
+};
+class CCloud3 : public CGameObject {
+public:
+	CCloud3(float x, float y) : CGameObject(x, y) {}
+	void Render();
+	void Update(DWORD dt) {}
+};
 class CNormalBrick : public CGameObject {
 public:
 	CNormalBrick(float x, float y) : CGameObject(x, y) {}
@@ -36,12 +48,12 @@ public:
 	void Render();
 };
 
-class C2nd : public CGameObject
+class CEnemy : public CGameObject
 {
 protected:
 	float vx;
 public:
-	C2nd(float x, float y, float vx);
+	CEnemy(float x, float y, float vx);
 	void Update(DWORD dt);
 	void Render();
 };

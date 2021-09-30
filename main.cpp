@@ -52,13 +52,17 @@ CMario *mario;
 
 CBrick *brick;
 CNormalBrick* NormalBrick;
+
 #define BRICK_X 10.0f;
 #define BRICK_Y 120.0f;
 #define BRICK_WIDTH 16.0f;
 #define BRICK_HEIGHT 16.0f;
 CCloud* cloud;
+CCloud* cloud1;
+CCloud2* cloud2;
+CCloud3* cloud3;
 
-C2nd *Cnd;
+CEnemy* enemy;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -169,24 +173,34 @@ void LoadResources()
 
 	ani = new CAnimation(100);
 	ani->Add(200001);
-	//ani->Add(200002);
-	//ani->Add(200003);
-	//ani->Add(200004);
-	//ani->Add(200005);
+	ani->Add(200002);
+	ani->Add(200003);
+	ani->Add(200004);
+	ani->Add(200005);
 	animations->Add(509, ani);
 	///
 	ani = new CAnimation(100);
 	ani->Add(200011);
 	animations->Add(508, ani);
+	ani = new CAnimation(100);
+	ani->Add(200012);
+	animations->Add(507, ani);
+	ani = new CAnimation(100);
+	ani->Add(200013);
+	animations->Add(506, ani);
 	///
 
-	mario = new CMario(MARIO_START_X + 50.0f, MARIO_START_Y, MARIO_START_VX);
-	brick = new CBrick(100.0f, 100.0f);
-	Cnd = new C2nd(MARIO_START_X , MARIO_START_Y, MARIO_START_VX);
-	cloud = new CCloud(50.0f,10.0f);
+	mario = new CMario(MARIO_START_X + 50.0f,160.0f, MARIO_START_VX);
+	brick = new CBrick(30.0f, 120.0f);
+	enemy = new CEnemy(MARIO_START_X , 160.0f, MARIO_START_VX);
 
 	//
-	NormalBrick = new CNormalBrick(7.0f,150.0f);
+	cloud = new CCloud(50.0f,40.0f);
+	cloud1 = new CCloud(140.0f,20.0f);
+	cloud2 = new CCloud2(156.0f, 20.0f);
+	cloud3 = new CCloud3(172.5f, 20.0f);
+	//
+
 	//
 }
 
@@ -197,7 +211,7 @@ void LoadResources()
 void Update(DWORD dt)
 {
 	mario->Update(dt);
-	Cnd->Update(dt);
+	enemy->Update(dt);
 }
 
 void Render()
@@ -222,17 +236,21 @@ void Render()
 
 		brick->Render();
 		mario->Render();
-		Cnd->Render();
+		enemy->Render();
+
 
 		//
 		cloud->Render();
+		cloud1->Render();
+		cloud2->Render();
+		cloud3->Render();
 
 		//
 
-		//
+		// san` 
 		float x = 9.0f;
-		float y = 150.0f;
-		for (int j = 0; j <= 3; j++) {
+		float y = 180.0f;
+		for (int j = 0; j <= 2; j++) {
 			for (int i = 0; i < 19; i++)
 			{
 				NormalBrick = new CNormalBrick(x, y);
@@ -241,6 +259,34 @@ void Render()
 			}
 			x = 9.0f;
 			y = y + 16.0f;
+		}
+		// gach x3
+		float x1 = 170.0f;
+		float y1 = 70.0f;
+		for (int i = 0; i < 4; i++)
+		{
+			NormalBrick = new CNormalBrick(x1, y1);
+			NormalBrick->Render();
+			x1 = x1 + 16.0f;
+		}
+		// gach x1
+		NormalBrick = new CNormalBrick(100.0f, 120.0f);
+		NormalBrick->Render();
+		// gach cau thang
+		float x2 = 250.0f;
+		float y2 = 164.0f;
+		int temp = 0;
+		for (int j = 5; j >= 0; j--) {
+			for (int i = 0; i <j-1; i++)
+			{
+				NormalBrick = new CNormalBrick(x2, y2);
+				NormalBrick->Render();
+				x2 = x2 + 16.0f;
+				
+			}
+			temp++;
+			x2 = 250.0f + 16.0f * temp;
+			y2 = y2 - 16.0f;
 		}
 
 		//
