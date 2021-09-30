@@ -45,7 +45,12 @@ void CBrick::Render() {
 	LPANIMATION ani = CAnimations::GetInstance()->Get(510);
 
 	ani->Render(x, y);
+}
+void CCoin::Render() {
 
+	LPANIMATION ani = CAnimations::GetInstance()->Get(505);
+
+	ani->Render(x, y);
 }
 void CCloud::Render() {
 	LPANIMATION ani = CAnimations::GetInstance()->Get(508);

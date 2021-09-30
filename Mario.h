@@ -13,6 +13,12 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 };
+class CCoin : public CGameObject {
+public:
+	CCoin(float x, float y) : CGameObject(x, y) {}
+	void Render();
+	void Update(DWORD dt) {}
+};
 class CCloud : public CGameObject {
 public:
 	CCloud(float x, float y) : CGameObject(x, y) {}
