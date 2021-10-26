@@ -1,0 +1,7 @@
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.vcxproj.CopyComplete
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.pdb
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\D3DCompiler_43.dll
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\d3dx9d_43.dll
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\d3dx10d_43.dll
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\d3dx11d_43.dll

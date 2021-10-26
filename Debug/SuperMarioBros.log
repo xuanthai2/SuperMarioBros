@@ -1,0 +1,11 @@
+﻿  Brick.cpp
+  Cloud.cpp
+  Game.cpp
+  PlayScene.cpp
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(81,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(271,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(296,20): warning C4018: '<': signed/unsigned mismatch
+  SampleKeyEventHandler.cpp
+  main.cpp
+  Generating Code...
+  SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe
