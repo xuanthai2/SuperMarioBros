@@ -3,9 +3,8 @@
 #include "Animation.h"
 #include "Animations.h"
 
-
-#define ID_ANI_CLOUD 11100
-#define	CLOUD_WIDTH 10
+#define ID_ANI_CLOUD 50000
+#define	CLOUD_WIDTH 16
 #define CLOUD_BBOX_WIDTH 10
 #define CLOUD_BBOX_HEIGHT 16
 
