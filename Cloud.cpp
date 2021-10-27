@@ -10,8 +10,12 @@ void CCloud::Render()
 
 void CCloud::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - CLOUD_BBOX_WIDTH / 2;
-	t = y - CLOUD_BBOX_HEIGHT / 2;
-	r = l + CLOUD_BBOX_WIDTH;
-	b = t + CLOUD_BBOX_HEIGHT;
+	//l = x - CLOUD_BBOX_WIDTH / 2;
+	//t = y - CLOUD_BBOX_HEIGHT / 2;
+	//r = l + CLOUD_BBOX_WIDTH;
+	//b = t + CLOUD_BBOX_HEIGHT;
+	l =0;
+	t = 0;
+	r = 0;
+	b = 0;
 }
