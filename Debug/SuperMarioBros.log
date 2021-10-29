@@ -1,25 +1,2 @@
-﻿  Animation.cpp
-  Animations.cpp
-  Brick.cpp
-  BrickQuestion.cpp
-  Cloud.cpp
-  Coin.cpp
-  Collision.cpp
-  Game.cpp
-  GameObject.cpp
-  Goomba.cpp
-  Koopas.cpp
-  main.cpp
-  Mario.cpp
-  Platform.cpp
-  PlayScene.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(82,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(274,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(299,20): warning C4018: '<': signed/unsigned mismatch
-  Portal.cpp
-  SampleKeyEventHandler.cpp
-  Sprite.cpp
-  Sprites.cpp
-  Textures.cpp
-  Generating Code...
+﻿  Mario.cpp
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

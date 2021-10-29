@@ -59,7 +59,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<CPortal*>(e->obj))
+	else if (dynamic_cast<CBrickQuestion*>(e->obj))
 		OnCollisionWithBrickQuestion(e);
 
 }
@@ -68,13 +68,13 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit 
+	// jump on top >> kill Goomba and deflect a bit  -> now jump from below >> take poin
 	if (e->ny > 0)
 	{
 		if (brickquestion->GetState() != BRICKQUESTION_DIE)
 		{
 			brickquestion->SetState(BRICKQUESTION_DIE);
-			vy = +MARIO_JUMP_DEFLECT_SPEED;
+			//vy = +MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	
