@@ -265,7 +265,7 @@ LPTEXTURE CGame::LoadTexture(LPCWSTR texturePath)
 	info.MipFilter = D3DX10_DEFAULT;
 	info.pSrcInfo = &imageInfo;
 
-	// Loads the texture into a temporary ID3D10Resource object
+	// 11Loads the texture into a temporary ID3D10Resource object
 	hr = D3DX10CreateTextureFromFile(pD3DDevice,
 		texturePath,
 		&info,

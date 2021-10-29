@@ -1,0 +1,22 @@
+[ASSETS]
+mario.txt
+coin.txt
+cloud.txt
+goomba.txt
+koopas.txt
+
+#Mario
+0	20	10
+
+
+#Goomba
+2	300	10
+
+#Koopas
+3	270	10
+
+
+
+
+#Portal 
+50	200	160	216	180	2

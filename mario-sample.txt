@@ -10,10 +10,11 @@ height	240
 1	scene01.txt
 2	scene02.txt
 
+
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png
 0	textures\mario.png
 10	textures\enemies.png
 20	textures\misc.png
-30  textures\background.png
+30	textures\background.png
