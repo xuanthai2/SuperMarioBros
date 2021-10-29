@@ -10,6 +10,7 @@
 #include "Coin.h"
 #include "Platform.h"
 #include "Cloud.h"
+#include "BrickQuestion.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -122,6 +123,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_CLOUD: obj = new CCloud(x, y); break;
+	case OBJECT_TYPE_BIRCKQUESTION: obj = new CBrickQuestion(x, y); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 

@@ -10,14 +10,14 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPAS_STATE_DIE)
+	if ((state == KOOPAS_STATE_DIE) || (state == KOOPAS_STATE_HIT))
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
 		top = y - KOOPAS_BBOX_HEIGHT_DIE / 2;
 		right = left + KOOPAS_BBOX_WIDTH;
 		bottom = top + KOOPAS_BBOX_HEIGHT_DIE;
 	}
-	else
+	else if (state == KOOPAS_STATE_WALKING)
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
 		top = y - KOOPAS_BBOX_HEIGHT / 2;
@@ -28,8 +28,22 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	if (state == KOOPAS_STATE_DIE)
+	{
+		x = 0;
+		y = 0;
+	}
+	else if (state == KOOPAS_STATE_HIT)
+	{
+		x += vx * dt;
+		y += vy * dt;
+	}
+	else if (state == KOOPAS_STATE_WALKING){ 
+		x += vx * dt;
+		y += vy * dt;
+	}
+
+
 };
 
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -52,11 +66,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPAS_STATE_DIE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		return;
-	}
+	//if ((state == KOOPAS_STATE_DIE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+	//{
+	//	isDeleted = true;
+	//	return;
+	//}
+	//if ((state == KOOPAS_STATE_HIT) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+	//{
+	//	isDeleted = true;
+	//	return;
+	//}
+
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -69,9 +89,12 @@ void CKoopas::Render()
 	{
 		aniId = ID_ANI_KOOPAS_DIE;
 	}
-
+	else if(state == KOOPAS_STATE_HIT)
+	{
+		aniId = ID_ANI_KOOPAS_HIT;
+	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 
@@ -89,6 +112,12 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
+		break;
+	case KOOPAS_STATE_HIT:
+		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;
+		vx = -KOOPAS_HIT_SPEED;
+		ax = 0;
+		ay = KOOPAS_GRAVITY;
 		break;
 	}
 }

@@ -10,6 +10,7 @@
 
 #include "Collision.h"
 
+#include "BrickQuestion.h"
 #include "Koopas.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -58,7 +59,25 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CPortal*>(e->obj))
+		OnCollisionWithBrickQuestion(e);
 
+}
+
+void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
+{
+	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+	if (e->ny > 0)
+	{
+		if (brickquestion->GetState() != BRICKQUESTION_DIE)
+		{
+			brickquestion->SetState(BRICKQUESTION_DIE);
+			vy = +MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -99,16 +118,21 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 
-	// jump on top >> kill Goomba and deflect a bit 
+	// jump on top >> kill Koompas and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (koopas->GetState() != KOOPAS_STATE_DIE)
+		if ((koopas->GetState() != KOOPAS_STATE_DIE) && (koopas->GetState() != KOOPAS_STATE_HIT))
 		{
 			koopas->SetState(KOOPAS_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
+		if (koopas->GetState() != KOOPAS_STATE_HIT)
+		{
+			koopas->SetState(KOOPAS_STATE_HIT);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
 	}
-	else // hit by Goomba
+	else // hit by Koompas
 	{
 		if (untouchable == 0)
 		{
