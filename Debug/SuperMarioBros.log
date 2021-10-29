@@ -1,2 +1,8 @@
-﻿  Mario.cpp
+﻿  Platform.cpp
+  PlayScene.cpp
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(82,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(292,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(317,20): warning C4018: '<': signed/unsigned mismatch
+  main.cpp
+  Generating Code...
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

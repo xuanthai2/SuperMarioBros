@@ -12,17 +12,23 @@
 
 #define BRICKQUESTION_LIVE 200
 #define BRICKQUESTION_DIE 300
+#define BRICKQUESTION_BOUNCE 400
 
 
 
 class CBrickQuestion : public CGameObject {
-
+	ULONGLONG die_start;
 public:
 	CBrickQuestion(float x, float y) : CGameObject(x, y) {}
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	virtual int IsBlocking() { return 1; }
 	virtual void SetState(int state);
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
+	virtual int IsCollidable() { return 1; };
+	virtual int IsSpecial() { return 0; }
+	
 };
 

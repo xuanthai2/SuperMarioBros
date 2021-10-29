@@ -1,4 +1,5 @@
 #include "BrickQuestion.h"
+#include "Coin.h"
 
 void CBrickQuestion::Render()
 {
@@ -8,7 +9,6 @@ void CBrickQuestion::Render()
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
-	//RenderBoundingBox();
 }
 
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -19,27 +19,29 @@ void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = t + BRICK_BBOX_HEIGHT;
 }
 
-void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CBrickQuestion*>(e->obj)) return;
-
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
-	}
-}
+//void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
+//{
+//	if (!e->obj->IsBlocking()) return;
+//	if (dynamic_cast<CBrickQuestion*>(e->obj)) return;
+//
+//	if (e->ny != 0)
+//	{
+//		vy = 0;
+//	}
+//	else if (e->nx != 0)
+//	{
+//		vx = -vx;
+//	}
+//}
 void CBrickQuestion::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case BRICKQUESTION_DIE:
-
+		//y = y - 4;
+		//die_start = GetTickCount64();
+		//vy = -0.4F;
 		break;
 	case BRICKQUESTION_LIVE:
 		
@@ -50,6 +52,15 @@ void CBrickQuestion::SetState(int state)
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
+	//if ((state == BRICKQUESTION_DIE) && (GetTickCount64() - die_start > BRICKQUESTION_BOUNCE))
+	//{
+	//	
+	//	y = y + 4;
+	//	return;
+	//}
+	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+
 }

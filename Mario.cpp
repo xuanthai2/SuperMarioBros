@@ -74,7 +74,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 		if (brickquestion->GetState() != BRICKQUESTION_DIE)
 		{
 			brickquestion->SetState(BRICKQUESTION_DIE);
-			//vy = +MARIO_JUMP_DEFLECT_SPEED;
+			vy = +MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	
