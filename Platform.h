@@ -32,7 +32,7 @@ public:
 	void RenderBoundingBox();
 	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 1; }
-	virtual int IsSpecial() { return 1; }
+	virtual int IsSpecial() { return 0; }
 };
 
 typedef CPlatform* LPPLATFORM;

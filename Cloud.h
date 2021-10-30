@@ -31,7 +31,7 @@ public:
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void RenderBoundingBox();
-	virtual int IsCollidable() { return 0; }
+	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 1; }
 	//virtual void DB(int& l, int& t, int& r, int& b) { l = 0; t = 1; r = 0; b = 0; }
 	virtual int IsSpecial() { return 1; }
