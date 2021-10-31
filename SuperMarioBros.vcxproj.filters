@@ -96,6 +96,9 @@
     <ClInclude Include="BrickQuestion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -162,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BrickQuestion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
