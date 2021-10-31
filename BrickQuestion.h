@@ -23,11 +23,12 @@ public:
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	virtual int IsBlocking() { return 1; }
+
 	virtual void SetState(int state);
 	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
-	virtual int IsCollidable() { return 1; };
+	//virtual int IsCollidable() { return 1; };
+	virtual int IsBlocking() { return 1; }
 	virtual int IsSpecial() { return 0; }
 	
 };
