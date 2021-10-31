@@ -1,5 +1,6 @@
 #include "Goomba.h"
-
+#include "Koopas.h"
+#include "Collision.h"
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
 	this->ax = 0;
@@ -34,6 +35,10 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CKoopas*>(e->obj))
+	{
+		OnCollisionWithKoopas(e);
+	}
 	if (!e->obj->IsBlocking()) return; 
 	if (dynamic_cast<CGoomba*>(e->obj)) return; 
 
@@ -45,6 +50,8 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
+	
+		
 }
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -90,5 +97,26 @@ void CGoomba::SetState(int state)
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
 			break;
+	}
+}
+
+void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+
+	// jump on top >> kill Koompas and deflect a bit 
+	if (e->ny < 0)
+	{
+
+	}
+	else // hit by Koompas
+	{
+
+			if (koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_WALKING )
+			{
+				if (GetState()!= GOOMBA_STATE_DIE) {
+					SetState(GOOMBA_STATE_DIE);
+				}
+			}
 	}
 }

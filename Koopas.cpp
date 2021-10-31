@@ -1,5 +1,7 @@
 #include "Koopas.h"
 
+#include "Collision.h"
+
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -44,7 +46,9 @@ void CKoopas::OnNoCollision(DWORD dt)
 	}
 
 
-};
+}
+
+
 
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
