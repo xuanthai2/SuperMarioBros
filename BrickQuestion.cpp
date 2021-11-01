@@ -1,13 +1,23 @@
 #include "BrickQuestion.h"
 #include "Coin.h"
+#include "debug.h"
+
+CBrickQuestion::CBrickQuestion(float x, float y, float inside) :CGameObject(x, y)
+{
+	this->inside = inside;
+	
+	SetState(BRICKQUESTION_LIVE);
+}
 
 void CBrickQuestion::Render()
 {
+
 	int aniId = ID_ANI_BRICKQUESTION;
 	if (state == BRICKQUESTION_DIE) {
 		aniId = ID_ANI_BRICKQUESTION_DIE;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+
 	RenderBoundingBox();
 }
 
@@ -39,9 +49,7 @@ void CBrickQuestion::SetState(int state)
 	switch (state)
 	{
 	case BRICKQUESTION_DIE:
-		//y = y - 4;
-		//die_start = GetTickCount64();
-		//vy = -0.4F;
+			//vy = -BRICK_BOUNCE_SPEED;
 		break;
 	case BRICKQUESTION_LIVE:
 		
@@ -51,13 +59,22 @@ void CBrickQuestion::SetState(int state)
 
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	//if ((state == BRICKQUESTION_DIE) && (GetTickCount64() - die_start > BRICKQUESTION_BOUNCE))
-	//{
-	//	
-	//	y = y + 4;
-	//	return;
+	//y += vy * dt;
+	//if(vy < 0) {
+	//	vy += BRICK_BOUNCE_SPEED / 4;
+	//	if (y > vitricu) { 
+	//		y = vitricu;
+	//		vy = 0;
+	//	}
+	//	if (y >= vitricu)
+	//	{
+	//		y = vitricu;
+	//		return;
+	//	}
 	//}
+
+
+
 	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

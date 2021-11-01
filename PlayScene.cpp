@@ -12,6 +12,7 @@
 #include "Cloud.h"
 #include "BrickQuestion.h"
 #include "Mics.h"
+#include "Mushroom.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -108,22 +109,38 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
-		if (player!=NULL) 
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
-
-		DebugOut(L"[INFO] Player object has been created!\n");
-		break;
+	
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
-	case OBJECT_TYPE_BIRCKQUESTION: obj = new CBrickQuestion(x, y); break;
+	case OBJECT_TYPE_BIRCKQUESTION: 
+	{
+		float inside = (float)atof(tokens[3].c_str());
+		//if (inside == BRICK_INSIDE_COIN) {
+
+		//}
+		//else if (inside == BRICK_INSIDE_COINS) {
+		//	for (int i = 0; i < 5; i++) {
+		//		obj = new CCoin(x, y); break;
+		//	}
+		//}
+		// if (inside == BRICK_INSIDE_MUSHROOM_RED) {
+		//	
+		//}
+		//else if (inside == BRICK_INSIDE_MUSHROOM_GREEN) {
+
+		//}
+		obj = new CBrickQuestion(x, y,inside); 
+		break;
+	}
+	case OBJECT_TYPE_MUSHROOM: 
+	{		
+		float mushroomtype = (float)atof(tokens[3].c_str());
+		obj = new CMushroom(x, y, mushroomtype); 
+
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -187,6 +204,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
+	case OBJECT_TYPE_MARIO:
+		if (player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		obj = new CMario(x, y);
+		player = (CMario*)obj;
+
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
 
 
 	default:

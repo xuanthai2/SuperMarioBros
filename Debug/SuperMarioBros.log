@@ -1,2 +1,13 @@
-﻿  Goomba.cpp
+﻿  Mario.cpp
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Mushroom.h(51,37): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Mushroom.h(52,48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  PlayScene.cpp
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Mushroom.h(51,37): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\Mushroom.h(52,48): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(84,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(338,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(363,20): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

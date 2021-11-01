@@ -11,6 +11,12 @@
 24004	353	116	370	133	20
 25005	371	116	388	133	20
 
+
+#Mushroom
+21011	300	189	315	204	20
+
+21012	318	189	333	204	20
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -23,3 +29,10 @@
 
 #QuestionBrickDie
 12001	25005	100
+
+
+#Mushroom Red
+12011	21011	100
+
+#Mushroom Green
+12012	21012	100

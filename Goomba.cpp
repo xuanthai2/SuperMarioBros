@@ -45,6 +45,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 )
 	{
 		vy = 0;
+		if (e->ny < 0) isOnPlatform = true;
 	}
 	else if (e->nx != 0)
 	{
@@ -58,7 +59,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4;
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
 		isDeleted = true;
@@ -97,6 +98,7 @@ void CGoomba::SetState(int state)
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
 			break;
+
 	}
 }
 
@@ -116,6 +118,11 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			{
 				if (GetState()!= GOOMBA_STATE_DIE) {
 					SetState(GOOMBA_STATE_DIE);
+					if (abs(this->vx) == GOOMBA_WALKING_SPEED)
+						vy = -GOOMBA_BOUNCE_SPEED;
+					else
+						vy = -GOOMBA_BOUNCE_SPEED;
+
 				}
 			}
 	}

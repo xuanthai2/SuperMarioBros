@@ -12,6 +12,7 @@
 
 #include "BrickQuestion.h"
 #include "Koopas.h"
+#include "Mushroom.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -55,6 +56,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CMushroom*>(e->obj))
+		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -67,17 +70,42 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
-
+	CGameObject* obj = NULL;
 	// jump on top >> kill Goomba and deflect a bit  -> now jump from below >> take poin
 	if (e->ny > 0)
 	{
-		if (brickquestion->GetState() != BRICKQUESTION_DIE)
-		{
-			brickquestion->SetState(BRICKQUESTION_DIE);
-			vy = +MARIO_JUMP_DEFLECT_SPEED;
-		}
+			if (brickquestion->GetState() != BRICKQUESTION_DIE)
+			{
+				//DebugOut(L"====== BRICK INSIDE : %d \n", brickquestion->GetInside());
+				//if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
+				//	obj = new CCoin(x, y);
+				//}
+
+				brickquestion->SetState(BRICKQUESTION_DIE);
+			}
+		
+
 	}
 	
+}
+
+void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+	e->obj->Delete();
+	DebugOut(L"======MUSHROOM TYPE : %d \n", mushroom->GetType());
+
+	//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
+	if (mushroom->GetType() != MUSHROOM_TYPE_RED) {
+		if (level < MARIO_LEVEL_BIG)
+		{
+			SetLevel(MARIO_LEVEL_BIG);
+			life++;
+		}
+	}
+	else if (mushroom->GetType() != MUSHROOM_TYPE_GREEN) {
+		SetLevel(MARIO_LEVEL_BIG);
+	}
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -302,7 +330,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }

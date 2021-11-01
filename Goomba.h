@@ -4,6 +4,7 @@
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
 
+#define GOOMBA_BOUNCE_SPEED  0.8f
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -13,6 +14,7 @@
 
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
+#define GOOMBA_STATE_BOUNCE 300
 
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
@@ -20,8 +22,10 @@
 class CGoomba : public CGameObject
 {
 protected:
+	float maxVx;
 	float ax;				
 	float ay; 
+	BOOLEAN isOnPlatform;
 
 	ULONGLONG die_start;
 
