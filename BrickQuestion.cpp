@@ -5,7 +5,7 @@
 CBrickQuestion::CBrickQuestion(float x, float y, float inside) :CGameObject(x, y)
 {
 	this->inside = inside;
-	
+	vitricu = this->y;
 	SetState(BRICKQUESTION_LIVE);
 }
 
@@ -49,7 +49,10 @@ void CBrickQuestion::SetState(int state)
 	switch (state)
 	{
 	case BRICKQUESTION_DIE:
-			//vy = -BRICK_BOUNCE_SPEED;
+		if (abs(this->vx) == 0) {
+			vy = -BRICK_BOUNCE_SPEED;
+			y = y - 0.01;
+		}
 		break;
 	case BRICKQUESTION_LIVE:
 		
@@ -59,18 +62,20 @@ void CBrickQuestion::SetState(int state)
 
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//y += vy * dt;
+	y += vy * dt;
+	if (vy < 0) vy += BRICK_BOUNCE_SPEED / 4;
 	//if(vy < 0) {
 	//	vy += BRICK_BOUNCE_SPEED / 4;
 	//	if (y > vitricu) { 
 	//		y = vitricu;
 	//		vy = 0;
 	//	}
-	//	if (y >= vitricu)
-	//	{
-	//		y = vitricu;
-	//		return;
-	//	}
+		if (y >= vitricu)
+		{
+			y = vitricu;
+			vy = 0;
+			return;
+		}
 	//}
 
 

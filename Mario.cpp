@@ -70,16 +70,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
-	CGameObject* obj = NULL;
 	// jump on top >> kill Goomba and deflect a bit  -> now jump from below >> take poin
 	if (e->ny > 0)
 	{
 			if (brickquestion->GetState() != BRICKQUESTION_DIE)
 			{
-				//DebugOut(L"====== BRICK INSIDE : %d \n", brickquestion->GetInside());
-				//if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
-				//	obj = new CCoin(x, y);
-				//}
+				DebugOut(L"====== BRICK INSIDE : %d \n", brickquestion->GetInside());
+				if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
+				}
 
 				brickquestion->SetState(BRICKQUESTION_DIE);
 			}
@@ -93,7 +91,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 	e->obj->Delete();
-	DebugOut(L"======MUSHROOM TYPE : %d \n", mushroom->GetType());
+	DebugOut(L"====== MUSHROOM TYPE : %d \n", mushroom->GetType());
 
 	//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
 	if (mushroom->GetType() != MUSHROOM_TYPE_RED) {
