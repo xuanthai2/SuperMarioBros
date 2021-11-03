@@ -4,7 +4,7 @@
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
 
-#define GOOMBA_BOUNCE_SPEED  0.8f
+#define GOOMBA_BOUNCE_SPEED  0.2f
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -39,8 +39,10 @@ protected:
 	float ay; 
 	float type;
 	float oldvx;
-	//BOOLEAN isOnPlatform;
+	BOOLEAN isOnPlatform;
 
+	ULONGLONG begin;
+	ULONGLONG end;
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);

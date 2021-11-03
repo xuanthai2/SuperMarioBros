@@ -81,7 +81,7 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 )
 	{
 		vy = 0;
-		//if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) isOnPlatform = true;
 	}
 	else if (e->nx != 0)
 	{
@@ -94,16 +94,23 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
-	oldvx = vx;
-	//if (vy > maxVy) vy -= GOOMBA_BOUNCE_SPEED / 4;
+	
+	end = GetTickCount64();
 	//if (abs(vx) >= abs(maxVx)) vx = -maxVy;
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
 		isDeleted = true;
 		return;
 	}
+	if ((state == GOOMBA_STATE_FLYING) && ((end - begin)/1000 > 2))
+	{
+		begin = GetTickCount64();
+		vy = -0.4f;
+	}
+	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 2;
+	vy += ay * dt;
+	vx += ax * dt;
+	oldvx = vx;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -159,8 +166,8 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_FLYING:
 			vx = -GOOMBA_WALKING_SPEED;
-
-			//vy = -GOOMBA_BOUNCE_SPEED/4;
+			//begin = GetTickCount64();
+			//vy = -GOOMBA_BOUNCE_SPEED/2;
 			//maxVy = abs(vy*4);
 			break;
 	}

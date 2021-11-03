@@ -27,8 +27,8 @@ void CMushroom::OnNoCollision(DWORD dt)
 
 void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CMushroom*>(e->obj)) return;
 	if (!e->obj->IsBlocking()) return;
+	if (dynamic_cast<CMushroom*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -88,4 +88,5 @@ void CMushroom::SetState(int state)
 		vx = -MUSHROOM_WALKING_SPEED;
 		break;
 	}
+
 }
