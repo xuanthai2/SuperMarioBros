@@ -7,12 +7,16 @@ CGoomba::CGoomba(float x, float y, float type) :CGameObject(x, y)
 	this->ay = GOOMBA_GRAVITY;
 	this->type = type;
 	die_start = -1;
+	oldvx = -GOOMBA_WALKING_SPEED;
+
 	//isOnPlatform = false;
 	if (type == GOOMBA_TYPE_NORMAL) {
 		SetState(GOOMBA_STATE_WALKING);
 	}
 	if (type == GOOMBA_TYPE_FLY) {
+
 		SetState(GOOMBA_STATE_FLYING);
+		
 	}
 }
 
@@ -49,10 +53,10 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 			right = left + GOOMBAFLY_BBOX_WIDTH;
 			bottom = top + GOOMBAFLY_BBOX_HEIGHT;
 		}
-		else if (state == GOOMBA_STATE_CANTFLY)
+		else if (state == GOOMBA_STATE_WALKING)
 		{
-			left = x - GOOMBA_BBOX_WIDTH / 2;
-			top = y - GOOMBA_BBOX_HEIGHT / 2;
+			left = x -1- GOOMBA_BBOX_WIDTH / 2;
+			top = y -1- GOOMBA_BBOX_HEIGHT / 2;
 			right = left + GOOMBA_BBOX_WIDTH;
 			bottom = top + GOOMBA_BBOX_HEIGHT;
 		}
@@ -93,7 +97,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 	oldvx = vx;
-	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4;
+	//if (vy > maxVy) vy -= GOOMBA_BOUNCE_SPEED / 4;
+	//if (abs(vx) >= abs(maxVx)) vx = -maxVy;
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
 		isDeleted = true;
@@ -112,13 +117,13 @@ void CGoomba::Render()
 	//{
 	//	aniId = ID_ANI_GOOMBA_DIE;
 	//}
-	int aniId = ID_ANI_GOOMBA_FLYING;
+	int aniId = ID_ANI_GOOMBA_WALKING;
 	if (GetType() == GOOMBA_TYPE_FLY) {
 		if (state == GOOMBA_STATE_FLYING) {
 			aniId = ID_ANI_GOOMBA_FLYING;
 		}
-		else if (state == GOOMBA_STATE_CANTFLY){
-			aniId = ID_ANI_GOOMBA_CANTFLY;
+		else if (state == GOOMBA_STATE_WALKING) {
+			aniId = ID_ANI_GOOMBA_WALKING;
 		}
 		else if (state == GOOMBA_STATE_DIE) {
 			aniId = ID_ANI_GOOMBA_DIE;
@@ -150,17 +155,14 @@ void CGoomba::SetState(int state)
 			ay = 0; 
 			break;
 		case GOOMBA_STATE_WALKING: 
-			vx = -GOOMBA_WALKING_SPEED;
+			vx = oldvx;
 			break;
 		case GOOMBA_STATE_FLYING:
 			vx = -GOOMBA_WALKING_SPEED;
-			vy = -GOOMBA_BOUNCE_SPEED;
-			break;
-		case GOOMBA_STATE_CANTFLY:
-			vx = oldvx;
-			vy = 0;
-			break;
 
+			//vy = -GOOMBA_BOUNCE_SPEED/4;
+			//maxVy = abs(vy*4);
+			break;
 	}
 }
 
