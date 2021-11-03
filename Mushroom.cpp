@@ -62,10 +62,10 @@ void CMushroom::Render()
 
 	if (GetType() == MUSHROOM_TYPE_GREEN)
 	{
-		aniId = ID_ANI_RED_MUSHROOM;
+		aniId = ID_ANI_GREEN_MUSHROOM;
 	}
 	else {
-		aniId = ID_ANI_GREEN_MUSHROOM;
+		aniId = ID_ANI_RED_MUSHROOM;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);

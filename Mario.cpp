@@ -30,6 +30,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	isOnPlatform = false;
 
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -75,8 +76,19 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 	{
 			if (brickquestion->GetState() != BRICKQUESTION_DIE)
 			{
-				DebugOut(L"====== BRICK INSIDE : %d \n", brickquestion->GetInside());
+				float xx, yy;
+				brickquestion->GetPosition(xx, yy);
+				DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
 				if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
+					obj = new CCoin(xx, yy);
+					obj->SetPosition(xx, yy);
+					objects.push_back(obj);
+					for (int i = 0; i < objects.size(); i++) {
+						DebugOut(L"============== This line has been made \n");
+						objects[i]->Render();
+					}
+
+		
 				}
 
 				brickquestion->SetState(BRICKQUESTION_DIE);
@@ -91,7 +103,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 	e->obj->Delete();
-	DebugOut(L"====== MUSHROOM TYPE : %d \n", mushroom->GetType());
+	DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom->GetType());
 
 	//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
 	if (mushroom->GetType() != MUSHROOM_TYPE_RED) {
@@ -113,10 +125,26 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		if (goomba->GetType() == GOOMBA_TYPE_NORMAL) 
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			if (goomba->GetState() != GOOMBA_STATE_DIE)
+			{
+				goomba->SetState(GOOMBA_STATE_DIE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+		}
+		else if (goomba->GetType() == GOOMBA_TYPE_FLY)
+		{
+			if (goomba->GetState() == GOOMBA_STATE_FLYING)
+			{
+				goomba->SetState(GOOMBA_STATE_CANTFLY);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (goomba->GetState() == GOOMBA_STATE_CANTFLY)
+			{
+				goomba->SetState(GOOMBA_STATE_DIE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
 		}
 	}
 	else // hit by Goomba

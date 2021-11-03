@@ -48,7 +48,7 @@ protected:
 public:
 	CMushroom(float x, float y, float type);
 	virtual void SetState(int state);
-	virtual int GetType() { return this->type; }
-	virtual void SetType(int type) { this->type = type; }
+	virtual float GetType() { return this->type; }
+	virtual void SetType(float type) { this->type = type; }
 };
 

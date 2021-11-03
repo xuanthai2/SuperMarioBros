@@ -1,4 +1,2 @@
-﻿  BrickQuestion.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.cpp(54,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Goomba.cpp
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

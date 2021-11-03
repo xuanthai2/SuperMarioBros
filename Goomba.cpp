@@ -1,29 +1,61 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Collision.h"
-CGoomba::CGoomba(float x, float y):CGameObject(x, y)
+CGoomba::CGoomba(float x, float y, float type) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
+	this->type = type;
 	die_start = -1;
-	SetState(GOOMBA_STATE_WALKING);
+	//isOnPlatform = false;
+	if (type == GOOMBA_TYPE_NORMAL) {
+		SetState(GOOMBA_STATE_WALKING);
+	}
+	if (type == GOOMBA_TYPE_FLY) {
+		SetState(GOOMBA_STATE_FLYING);
+	}
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (state == GOOMBA_STATE_DIE)
-	{
-		left = x - GOOMBA_BBOX_WIDTH/2;
-		top = y - GOOMBA_BBOX_HEIGHT_DIE/2;
-		right = left + GOOMBA_BBOX_WIDTH;
-		bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
+	if (GetType() == GOOMBA_TYPE_NORMAL) {
+		if (state == GOOMBA_STATE_DIE)
+		{
+			left = x - GOOMBA_BBOX_WIDTH / 2;
+			top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
+			right = left + GOOMBA_BBOX_WIDTH;
+			bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
+		}
+		else
+		{
+			left = x - 1 - GOOMBA_BBOX_WIDTH / 2;
+			top = y - 1 - GOOMBA_BBOX_HEIGHT / 2;
+			right = left + GOOMBA_BBOX_WIDTH;
+			bottom = top + GOOMBA_BBOX_HEIGHT;
+		}
 	}
-	else
-	{ 
-		left = x - GOOMBA_BBOX_WIDTH/2;
-		top = y - GOOMBA_BBOX_HEIGHT/2;
-		right = left + GOOMBA_BBOX_WIDTH;
-		bottom = top + GOOMBA_BBOX_HEIGHT;
+	if (GetType() == GOOMBA_TYPE_FLY) {
+		if (state == GOOMBA_STATE_DIE)
+		{
+			left = x - GOOMBA_BBOX_WIDTH / 2;
+			top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
+			right = left + GOOMBA_BBOX_WIDTH;
+			bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
+		}
+		else if (state == GOOMBA_STATE_FLYING) 
+		{
+			left = x - GOOMBAFLY_BBOX_WIDTH / 2;
+			top = y - GOOMBAFLY_BBOX_HEIGHT / 2;
+			right = left + GOOMBAFLY_BBOX_WIDTH;
+			bottom = top + GOOMBAFLY_BBOX_HEIGHT;
+		}
+		else if (state == GOOMBA_STATE_CANTFLY)
+		{
+			left = x - GOOMBA_BBOX_WIDTH / 2;
+			top = y - GOOMBA_BBOX_HEIGHT / 2;
+			right = left + GOOMBA_BBOX_WIDTH;
+			bottom = top + GOOMBA_BBOX_HEIGHT;
+		}
 	}
 }
 
@@ -45,11 +77,12 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 )
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		//if (e->ny < 0) isOnPlatform = true;
 	}
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+		//isOnPlatform = false;
 	}
 	
 		
@@ -59,6 +92,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	oldvx = vx;
 	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4;
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
@@ -73,14 +107,34 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CGoomba::Render()
 {
-	int aniId = ID_ANI_GOOMBA_WALKING;
-	if (state == GOOMBA_STATE_DIE) 
-	{
-		aniId = ID_ANI_GOOMBA_DIE;
+	//int aniId = ID_ANI_GOOMBA_WALKING;
+	//if (state == GOOMBA_STATE_DIE) 
+	//{
+	//	aniId = ID_ANI_GOOMBA_DIE;
+	//}
+	int aniId = ID_ANI_GOOMBA_FLYING;
+	if (GetType() == GOOMBA_TYPE_FLY) {
+		if (state == GOOMBA_STATE_FLYING) {
+			aniId = ID_ANI_GOOMBA_FLYING;
+		}
+		else if (state == GOOMBA_STATE_CANTFLY){
+			aniId = ID_ANI_GOOMBA_CANTFLY;
+		}
+		else if (state == GOOMBA_STATE_DIE) {
+			aniId = ID_ANI_GOOMBA_DIE;
+		}
+	}
+	if (GetType() == GOOMBA_TYPE_NORMAL) {
+		if (state == GOOMBA_STATE_WALKING) {
+			aniId = ID_ANI_GOOMBA_WALKING;
+		}
+		else {
+			aniId = ID_ANI_GOOMBA_DIE;
+		}
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)
@@ -97,6 +151,14 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
+			break;
+		case GOOMBA_STATE_FLYING:
+			vx = -GOOMBA_WALKING_SPEED;
+			vy = -GOOMBA_BOUNCE_SPEED;
+			break;
+		case GOOMBA_STATE_CANTFLY:
+			vx = oldvx;
+			vy = 0;
 			break;
 
 	}
@@ -116,14 +178,19 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 			if (koopas->GetState() != KOOPAS_STATE_DIE && koopas->GetState() != KOOPAS_STATE_WALKING )
 			{
-				if (GetState()!= GOOMBA_STATE_DIE) {
-					SetState(GOOMBA_STATE_DIE);
-					if (abs(this->vx) == GOOMBA_WALKING_SPEED)
-						vy = -GOOMBA_BOUNCE_SPEED;
-					else
-						vy = -GOOMBA_BOUNCE_SPEED;
+				//if (GetType() == GOOMBA_TYPE_NORMAL) {
+					if (GetState() != GOOMBA_STATE_DIE) {
+						SetState(GOOMBA_STATE_DIE);
+						if (abs(this->vx) == GOOMBA_WALKING_SPEED)
+							vy = -GOOMBA_BOUNCE_SPEED;
+						else
+							vy = -GOOMBA_BOUNCE_SPEED;
 
-				}
+					}
+				//}
+				//else {
+
+				//}
 			}
 	}
 }

@@ -103,6 +103,11 @@
 
 class CMario : public CGameObject
 {
+
+	vector<LPGAMEOBJECT> objects;
+	CGameObject* obj = NULL;
+
+
 	BOOLEAN isSitting;
 	float maxVx;
 	float ax;				// acceleration on x 

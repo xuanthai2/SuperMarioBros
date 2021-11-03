@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
-
+#include "debug.h"
 #include "PlayScene.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -110,19 +110,27 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
+	case OBJECT_TYPE_GOOMBA: {
+		float type = (float)atof(tokens[3].c_str());
+		obj = new CGoomba(x, y, type); break;
+	}
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_BIRCKQUESTION: 
 	{
 		float inside = (float)atof(tokens[3].c_str());
-		//if (inside == BRICK_INSIDE_COIN) {
 
+
+		//if (inside == BRICK_INSIDE_COIN) {
+		//	obj = new CCoin(x, y - 16);
+		//	obj->SetPosition(x, y-16);
+		//	objects.push_back(obj);
+		//	DebugOut(L"============== This line has been made \n");
 		//}
 		//else if (inside == BRICK_INSIDE_COINS) {
 		//	for (int i = 0; i < 5; i++) {
-		//		obj = new CCoin(x, y); break;
+		//		obj = new CCoin(x, y);
 		//	}
 		//}
 		// if (inside == BRICK_INSIDE_MUSHROOM_RED) {
@@ -131,7 +139,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		//else if (inside == BRICK_INSIDE_MUSHROOM_GREEN) {
 
 		//}
+
 		obj = new CBrickQuestion(x, y,inside); 
+		
 		break;
 	}
 	case OBJECT_TYPE_MUSHROOM: 
