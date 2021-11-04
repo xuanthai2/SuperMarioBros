@@ -151,6 +151,7 @@
     <ClInclude Include="BrickQuestion.h" />
     <ClInclude Include="Cloud.h" />
     <ClInclude Include="Coin.h" />
+    <ClInclude Include="Coin2.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Game.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="BrickQuestion.cpp" />
     <ClCompile Include="Cloud.cpp" />
     <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="Coin2.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Game.cpp" />

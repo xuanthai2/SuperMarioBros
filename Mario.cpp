@@ -6,6 +6,7 @@
 
 #include "Goomba.h"
 #include "Coin.h"
+#include "Coin2.h"
 #include "Portal.h"
 
 #include "Collision.h"
@@ -59,12 +60,27 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopas(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CCoin2*>(e->obj))
+		OnCollisionWithCoin2(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrickQuestion*>(e->obj))
 		OnCollisionWithBrickQuestion(e);
+
+}
+
+void CMario::OnCollisionWithCoin2(LPCOLLISIONEVENT e)
+{
+	CCoin2* coin2 = dynamic_cast<CCoin2*>(e->obj);
+	if (e->ny > 0) {
+		if (coin2->GetState() != COIN2_STATE_DIE)
+		{
+			coin2->SetState(COIN2_STATE_DIE);
+		}
+		coin++;
+	}
 
 }
 
@@ -76,20 +92,18 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 	{
 			if (brickquestion->GetState() != BRICKQUESTION_DIE)
 			{
-				float xx, yy;
-				brickquestion->GetPosition(xx, yy);
-				DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
-				if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
-					obj = new CCoin(xx, yy);
-					obj->SetPosition(xx, yy);
-					objects.push_back(obj);
-					for (int i = 0; i < objects.size(); i++) {
-						DebugOut(L"============== This line has been made \n");
-						objects[i]->Render();
-					}
-
-		
-				}
+				//float xx, yy;
+				//brickquestion->GetPosition(xx, yy);
+				//DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
+				//if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
+				//	obj = new CCoin(xx, yy);
+				//	obj->SetPosition(xx, yy);
+				//	objects.push_back(obj);
+				//	for (int i = 0; i < objects.size(); i++) {
+				//		DebugOut(L"============== This line has been made \n");
+				//		objects[i]->Render();
+				//	}
+				//}
 
 				brickquestion->SetState(BRICKQUESTION_DIE);
 			}
@@ -245,6 +259,15 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
+	//CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+	//if (e->ny > 0) {
+	//	if (coin->GetState() != COIN_STATE_DIE)
+	//	{
+	//		coin->SetState(COIN_STATE_DIE);
+	//		e->obj->Delete();
+	//	}
+	//	coin++;
+	//}
 	e->obj->Delete();
 	coin++;
 }

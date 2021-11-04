@@ -10,6 +10,9 @@
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
+#define COIN_STATE_LIVE 18
+#define COIN_STATE_DIE 19
+
 class CCoin : public CGameObject {
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {}

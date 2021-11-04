@@ -50,7 +50,7 @@ void CBrickQuestion::SetState(int state)
 	{
 	case BRICKQUESTION_DIE:
 		if (abs(this->vx) == 0) {
-			vy = -BRICK_BOUNCE_SPEED*2;
+			vy = -BRICK_BOUNCE_SPEED;
 			y = y - 0.01;
 		}
 		break;
@@ -63,7 +63,7 @@ void CBrickQuestion::SetState(int state)
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	y += vy * dt;
-	if (vy < 0) vy += BRICK_BOUNCE_SPEED / 2;
+	if (vy < 0) vy += BRICK_BOUNCE_SPEED / 4;
 	//if(vy < 0) {
 	//	vy += BRICK_BOUNCE_SPEED / 4;
 	//	if (y > vitricu) { 
@@ -83,6 +83,4 @@ void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-
-
 }
