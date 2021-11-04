@@ -260,7 +260,20 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() != KOOPAS_STATE_WALKING && (koopas->GetState() != KOOPAS_STATE_HIT))
 		{
-			koopas->SetState(KOOPAS_STATE_HIT);
+			//koopas->SetState(KOOPAS_STATE_HIT);
+			//koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+			float kx, ky;
+			koopas->GetPosition(kx, ky);
+			if (x <= kx)
+			{
+				koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
+				koopas->SetState(KOOPAS_STATE_HIT);
+			}
+			if (x > kx)
+			{
+				koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+				koopas->SetState(KOOPAS_STATE_HIT);
+			}
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_HIT)
@@ -316,6 +329,22 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
+			}
+			if (koopas->GetState() == KOOPAS_STATE_DIE)
+			{
+				float kx, ky;
+				koopas->GetPosition(kx, ky);
+				if (x < kx)
+				{
+					koopas->SetSpeed(KOOPAS_HIT_SPEED,0.2f);
+					koopas->SetState(KOOPAS_STATE_HIT);
+				}
+				if (x > kx)
+				{
+					koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+					koopas->SetState(KOOPAS_STATE_HIT);
+				}
+
 			}
 		}
 	}

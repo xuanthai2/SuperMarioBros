@@ -119,7 +119,7 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_HIT:
 		//y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;
-		vx = -KOOPAS_HIT_SPEED;
+		//vx = -KOOPAS_HIT_SPEED;
 		ax = 0;
 		ay = KOOPAS_GRAVITY;
 		break;
