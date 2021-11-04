@@ -105,6 +105,9 @@
     <ClInclude Include="Coin2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mushroom2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -180,6 +183,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Coin2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

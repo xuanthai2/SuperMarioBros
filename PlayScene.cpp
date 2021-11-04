@@ -124,15 +124,15 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 
 		if (inside == BRICK_INSIDE_COIN) {
-			obj = new CCoin2(x+0.5, y+0.5);
+			obj = new CCoin2(x+0.5, y+0.5, 0);
 			obj->SetPosition(x+ 0.5, y+0.5);
 			objects.push_back(obj);
-			DebugOut(L"============== This line has been made \n");
+			//DebugOut(L"============== This line has been made \n");
 		}
 		else if (inside == BRICK_INSIDE_COINS) {
-			for (int i = 0; i < 5; i++) {
-				obj = new CCoin(x, y);
-			}
+			obj = new CCoin2(x + 0.5, y + 0.5, 5);
+			obj->SetPosition(x + 0.5, y + 0.5);
+			objects.push_back(obj);
 		}
 		 if (inside == BRICK_INSIDE_MUSHROOM_RED) {
 			

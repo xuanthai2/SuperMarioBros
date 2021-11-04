@@ -74,12 +74,20 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCoin2(LPCOLLISIONEVENT e)
 {
 	CCoin2* coin2 = dynamic_cast<CCoin2*>(e->obj);
+	
 	if (e->ny > 0) {
-		if (coin2->GetState() != COIN2_STATE_DIE)
+		if (coin2->GetType() == COIN2_TYPE_MULTI)
+		{
+			coinbounce++;
+			coin2->SetTB(coinbounce);
+			coin2->SetState(COIN2_STATE_DIE);
+		}
+		if (coin2->GetType() == COIN2_TYPE_ONCE)
 		{
 			coin2->SetState(COIN2_STATE_DIE);
 		}
 		coin++;
+	
 	}
 
 }

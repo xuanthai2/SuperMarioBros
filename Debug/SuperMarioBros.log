@@ -1,21 +1,5 @@
-﻿  BrickQuestion.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.cpp(54,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Coin.cpp
-  Coin2.cpp
+﻿  Coin2.cpp
   Mario.cpp
 C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-  PlayScene.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(10,1): warning C4005: 'BRICK_BBOX_WIDTH': macro redefinition
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\Brick.h(9): message : see previous definition of 'BRICK_BBOX_WIDTH'
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(85,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(127,29): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(127,22): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(128,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(128,22): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(348,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(373,20): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
   Generating Code...
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

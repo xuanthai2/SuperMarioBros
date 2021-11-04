@@ -39,17 +39,29 @@ void CCoin2::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	y += vy * dt;
 	if (vy < 0) vy += COIN2_BOUNCE_SPEED;
-	if ((state == COIN2_STATE_DIE) && (GetTickCount64() - die_start > COIN2_DIE_TIMEOUT))
+	if (type == COIN2_TYPE_ONCE)
 	{
-		isDeleted = true;
+		if ((state == COIN2_STATE_DIE) && (GetTickCount64() - die_start > COIN2_DIE_TIMEOUT))
+		{
+			isDeleted = true;
+			return;
+		}
+	}
+	else if (type == COIN2_TYPE_MULTI)
+	{
+		if ((state == COIN2_STATE_DIE) && (GetTickCount64() - die_start > COIN2_DIE_TIMEOUT) && timebounce >= 5)
+		{
+			isDeleted = true;
+			return;
+		}
+	}
+
+	if (y >= vitricu)
+	{
+		y = vitricu;
+		vy = 0;
 		return;
 	}
-	//if (y >= vitricu)
-	//{
-	//	y = vitricu;
-	//	vy = 0;
-	//	return;
-	//}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

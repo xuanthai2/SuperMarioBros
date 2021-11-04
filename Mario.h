@@ -116,6 +116,7 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	int life;
+	int coinbounce;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
@@ -138,6 +139,7 @@ public:
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
+		coinbounce = 0;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
