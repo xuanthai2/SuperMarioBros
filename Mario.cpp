@@ -180,11 +180,47 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			koopas->SetState(KOOPAS_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
-		if (koopas->GetState() != KOOPAS_STATE_HIT)
+		else if (koopas->GetState() != KOOPAS_STATE_WALKING && (koopas->GetState() != KOOPAS_STATE_HIT))
 		{
 			koopas->SetState(KOOPAS_STATE_HIT);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
+		else if (koopas->GetState() == KOOPAS_STATE_HIT)
+		{
+			koopas->SetState(KOOPAS_STATE_DIE);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopas->GetState() == KOOPAS_STATE_DIE)
+		{
+			//float kx, ky;
+			//float vx, vy;
+			//koopas->GetSpeed(vx, vy);
+			//koopas->GetPosition(kx, ky);
+			koopas->SetState(KOOPAS_STATE_HIT);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			//if (x >= kx)
+			//{
+			//	koopas->SetSpeed(-KOOPAS_HIT_SPEED, vy);
+			//	vy = -MARIO_JUMP_DEFLECT_SPEED;
+			//}
+			//else
+			//{
+			//	koopas->SetSpeed(KOOPAS_HIT_SPEED, vy);
+			//	vy = -MARIO_JUMP_DEFLECT_SPEED;
+			//}
+		}
+		//if (koopas->GetState() != KOOPAS_STATE_HIT && koopas->GetState() != KOOPAS_STATE_WALKING)
+		//{
+		//	koopas->SetState(KOOPAS_STATE_HIT);
+		//	vy = -MARIO_JUMP_DEFLECT_SPEED;
+		//}
+		//else
+		//{
+		//	koopas->SetState(KOOPAS_STATE_HIT);
+		//	vy = -MARIO_JUMP_DEFLECT_SPEED;
+		//}
+
 	}
 	else // hit by Koompas
 	{

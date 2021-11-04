@@ -25,8 +25,8 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 	if (GetType() == GOOMBA_TYPE_NORMAL) {
 		if (state == GOOMBA_STATE_DIE)
 		{
-			left = x - GOOMBA_BBOX_WIDTH / 2;
-			top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
+			left = x - 1 - GOOMBA_BBOX_WIDTH / 2;
+			top = y - 1 - GOOMBA_BBOX_HEIGHT_DIE / 2;
 			right = left + GOOMBA_BBOX_WIDTH;
 			bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
 		}
@@ -95,22 +95,25 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	
+	vy += ay * dt;
+	vx += ax * dt;
+	oldvx = vx;
 	end = GetTickCount64();
-	//if (abs(vx) >= abs(maxVx)) vx = -maxVy;
+	//if (abs(vx) >= abs(maxVy)) vx = -maxVy;
+	ULONGLONG a;
+	a = (end - begin) % (begin);
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
 		isDeleted = true;
 		return;
 	}
-	if ((state == GOOMBA_STATE_FLYING) && ((end - begin)/1000 > 2))
-	{
-		begin = GetTickCount64();
-		vy = -0.4f;
-	}
-	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 2;
-	vy += ay * dt;
-	vx += ax * dt;
-	oldvx = vx;
+	//if ((state == GOOMBA_STATE_FLYING) && (a > 0) && (a < 2) )
+	//{
+	//	//begin = GetTickCount64();
+	//	vy = -GOOMBA_BOUNCE_SPEED;
+	//}
+
+	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -166,7 +169,7 @@ void CGoomba::SetState(int state)
 			break;
 		case GOOMBA_STATE_FLYING:
 			vx = -GOOMBA_WALKING_SPEED;
-			//begin = GetTickCount64();
+			begin = GetTickCount64();
 			//vy = -GOOMBA_BOUNCE_SPEED/2;
 			//maxVy = abs(vy*4);
 			break;
@@ -190,10 +193,10 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				//if (GetType() == GOOMBA_TYPE_NORMAL) {
 					if (GetState() != GOOMBA_STATE_DIE) {
 						SetState(GOOMBA_STATE_DIE);
-						if (abs(this->vx) == GOOMBA_WALKING_SPEED)
+						/*if (abs(this->vx) == GOOMBA_WALKING_SPEED)*/
 							vy = -GOOMBA_BOUNCE_SPEED;
-						else
-							vy = -GOOMBA_BOUNCE_SPEED;
+						/*else
+							vy = -GOOMBA_BOUNCE_SPEED;*/
 
 					}
 				//}

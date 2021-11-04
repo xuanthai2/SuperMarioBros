@@ -32,8 +32,8 @@ void CKoopas::OnNoCollision(DWORD dt)
 {
 	if (state == KOOPAS_STATE_DIE)
 	{
-		x = 0;
-		y = 0;
+		x += vx * dt;
+		y += vy * dt;
 	}
 	else if (state == KOOPAS_STATE_HIT)
 	{
@@ -108,11 +108,11 @@ void CKoopas::SetState(int state)
 	switch (state)
 	{
 	case KOOPAS_STATE_DIE:
-		die_start = GetTickCount64();
-		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;
+		//die_start = GetTickCount64();
+		//y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;
 		vx = 0;
 		vy = 0;
-		ay = 0;
+		ax = 0;
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
