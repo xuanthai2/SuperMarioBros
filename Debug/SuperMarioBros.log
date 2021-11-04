@@ -1,5 +1,15 @@
-﻿  Coin2.cpp
+﻿  BrickQuestion.cpp
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.cpp(54,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Cloud.cpp
+  Coin.cpp
+  Coin2.cpp
+  Goomba.cpp
+  Koopas.cpp
   Mario.cpp
 C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  Mushroom.cpp
+  Mushroom2.cpp
+  Portal.cpp
   Generating Code...
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe

@@ -1,20 +1,22 @@
 #pragma once
 #include "Mushroom.h"
 
-#define MUSHROOM2_GRAVITY 0.002f
+#define MUSHROOM2_GRAVITY 0.003f
 #define MUSHROOM2_WALKING_SPEED 0.05f
 
 #define ID_ANI_RED_MUSHROOM 12011
 #define ID_ANI_GREEN_MUSHROOM 12012
 
-#define MUSHROOM2_BBOX_WIDTH 16
-#define MUSHROOM2_BBOX_HEIGHT 14
+#define MUSHROOM2_BBOX_WIDTH 14
+#define MUSHROOM2_BBOX_HEIGHT 12
 #define MUSHROOM2_BBOX_HEIGHT_DIE 7
 
 #define MUSHROOM2_DIE_TIMEOUT 500
 
 #define MUSHROOM2_STATE_WALKING 100
 #define MUSHROOM2_STATE_DIE 200
+#define MUSHROOM2_STATE_IDLE 62
+#define MUSHROOM2_BOUNCE_SPEED 0.2f
 
 //#define ID_ANI_MUSHROOM_WALKING 300
 
@@ -43,7 +45,16 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CMushroom2(float x, float y, float type);
+	CMushroom2(float x, float y, float type) : CMushroom(x, y, type) 
+	{
+		this->type = type;
+		this->ax = 0;
+		this->ay = 0;/*MUSHROOM_GRAVITY;*/
+		//die_start = -1;
+		vx = 0;
+		vy = 0;
+		SetState(MUSHROOM2_STATE_IDLE);
+	}
 	virtual void SetState(int state);
 	virtual float GetType() { return this->type; }
 	virtual void SetType(float type) { this->type = type; }

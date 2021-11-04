@@ -5,15 +5,19 @@
 #include "Game.h"
 
 #include "Goomba.h"
+
 #include "Coin.h"
 #include "Coin2.h"
+
 #include "Portal.h"
 
 #include "Collision.h"
 
 #include "BrickQuestion.h"
 #include "Koopas.h"
+
 #include "Mushroom.h"
+#include "Mushroom2.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -58,6 +62,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CMushroom2*>(e->obj))
+		OnCollisionWithMushroom2(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CCoin2*>(e->obj))
@@ -137,6 +143,56 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	}
 	else if (mushroom->GetType() != MUSHROOM_TYPE_GREEN) {
 		SetLevel(MARIO_LEVEL_BIG);
+	}
+}
+
+void CMario::OnCollisionWithMushroom2(LPCOLLISIONEVENT e)
+{
+	CMushroom2* mushroom2 = dynamic_cast<CMushroom2*>(e->obj);
+	if (e->ny > 0) {
+		if (mushroom2->GetState() != MUSHROOM2_STATE_WALKING && mushroom2->GetState() != MUSHROOM2_STATE_DIE)
+		{
+			mushroom2->SetState(MUSHROOM2_STATE_WALKING);
+		}
+		else
+		{
+			if (mushroom2->GetState() == MUSHROOM2_STATE_WALKING)
+			{
+
+
+				e->obj->Delete();
+				DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom2->GetType());
+
+				//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
+				if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
+					if (level < MARIO_LEVEL_BIG)
+					{
+						SetLevel(MARIO_LEVEL_BIG);
+						life++;
+					}
+				}
+				else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
+					SetLevel(MARIO_LEVEL_BIG);
+				}
+			}
+		}
+	}
+	else
+	{
+		e->obj->Delete();
+		DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom2->GetType());
+
+		//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
+		if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
+			if (level < MARIO_LEVEL_BIG)
+			{
+				SetLevel(MARIO_LEVEL_BIG);
+				life++;
+			}
+		}
+		else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
+			SetLevel(MARIO_LEVEL_BIG);
+		}
 	}
 }
 
@@ -423,7 +479,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }

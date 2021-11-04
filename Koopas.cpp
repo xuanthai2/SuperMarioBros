@@ -98,7 +98,7 @@ void CKoopas::Render()
 		aniId = ID_ANI_KOOPAS_HIT;
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 

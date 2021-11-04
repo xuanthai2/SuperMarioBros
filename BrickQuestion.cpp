@@ -18,7 +18,7 @@ void CBrickQuestion::Render()
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -50,7 +50,7 @@ void CBrickQuestion::SetState(int state)
 	{
 	case BRICKQUESTION_DIE:
 		if (abs(this->vx) == 0) {
-			vy = -BRICK_BOUNCE_SPEED;
+			vy = -BRICK_BOUNCE_SPEED/2;
 			y = y - 0.01;
 		}
 		break;
@@ -63,7 +63,7 @@ void CBrickQuestion::SetState(int state)
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	y += vy * dt;
-	if (vy < 0) vy += BRICK_BOUNCE_SPEED / 4;
+	if (vy < 0) vy += BRICK_BOUNCE_SPEED / 8;
 	//if(vy < 0) {
 	//	vy += BRICK_BOUNCE_SPEED / 4;
 	//	if (y > vitricu) { 
