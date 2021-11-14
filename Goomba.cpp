@@ -25,15 +25,15 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 	if (GetType() == GOOMBA_TYPE_NORMAL) {
 		if (state == GOOMBA_STATE_DIE)
 		{
-			left = x - 1 - GOOMBA_BBOX_WIDTH / 2;
-			top = y - 1 - GOOMBA_BBOX_HEIGHT_DIE / 2;
+			left = x - GOOMBA_BBOX_WIDTH / 2;
+			top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
 			right = left + GOOMBA_BBOX_WIDTH;
 			bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
 		}
 		else
 		{
-			left = x - 1 - GOOMBA_BBOX_WIDTH / 2;
-			top = y - 1 - GOOMBA_BBOX_HEIGHT / 2;
+			left = x  - GOOMBA_BBOX_WIDTH / 2;
+			top = y  - GOOMBA_BBOX_HEIGHT / 2;
 			right = left + GOOMBA_BBOX_WIDTH;
 			bottom = top + GOOMBA_BBOX_HEIGHT;
 		}
@@ -55,8 +55,8 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 		}
 		else if (state == GOOMBA_STATE_WALKING)
 		{
-			left = x -1- GOOMBA_BBOX_WIDTH / 2;
-			top = y -1- GOOMBA_BBOX_HEIGHT / 2;
+			left = x - GOOMBA_BBOX_WIDTH / 2;
+			top = y - GOOMBA_BBOX_HEIGHT / 2;
 			right = left + GOOMBA_BBOX_WIDTH;
 			bottom = top + GOOMBA_BBOX_HEIGHT;
 		}

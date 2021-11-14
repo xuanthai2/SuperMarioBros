@@ -137,8 +137,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		if (inside == BRICK_INSIDE_MUSHROOM_RED) {
 			
-			obj = new CMushroom2(x + 0.5, y + 0.5, 399);
-			obj->SetPosition(x + 0.5, y + 0.5);
+			obj = new CMushroom2(x + 0.75, y + 0.5, 399);
+			obj->SetPosition(x + 0.75, y + 0.5);
 			objects.push_back(obj);
 		}
 		else if (inside == BRICK_INSIDE_MUSHROOM_GREEN) {
