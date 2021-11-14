@@ -1,32 +1,4 @@
-﻿  Game.cpp
-  Goomba.cpp
-  Koopas.cpp
-  Mario.cpp
+﻿  BrickQuestion.cpp
 C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-  PlayScene.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(10,1): warning C4005: 'BRICK_BBOX_WIDTH': macro redefinition
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\Brick.h(9): message : see previous definition of 'BRICK_BBOX_WIDTH'
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(86,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(128,29): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(128,22): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(129,30): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(129,22): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(134,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(134,23): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(135,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(135,23): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(140,36): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(140,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(141,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(141,23): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(145,36): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(145,27): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(146,32): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(146,23): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(354,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\PlayScene.cpp(379,20): warning C4018: '<': signed/unsigned mismatch
-  SampleKeyEventHandler.cpp
-  main.cpp
-  Generating Code...
+C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.cpp(54,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe
