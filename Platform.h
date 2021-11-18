@@ -12,6 +12,8 @@ protected:
 	float cellWidth;
 	float cellHeight;
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
+	int start;
+	int end;
 
 public: 
 	CPlatform(float x, float y,

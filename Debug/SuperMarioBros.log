@@ -1,4 +1,6 @@
-﻿  BrickQuestion.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.cpp(54,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe
+﻿  Mario.cpp
+C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\BrickQuestion.h(43,54): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Mushroom.h(51,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Mushroom2.h(50,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Debug\SuperMarioBros.exe
