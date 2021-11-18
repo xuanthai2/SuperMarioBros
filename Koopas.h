@@ -36,6 +36,10 @@ protected:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
+
+	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
+	void OnCollisionWithCloud(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
 	
 	
 

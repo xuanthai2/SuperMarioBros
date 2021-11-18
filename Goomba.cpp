@@ -2,6 +2,7 @@
 #include "Koopas.h"
 #include "Collision.h"
 #include "Platform.h"
+#include "Cloud.h"
 #include "debug.h"
 
 CGoomba::CGoomba(float x, float y, float type) :CGameObject(x, y)
@@ -77,6 +78,10 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CPlatform*>(e->obj))
 	{
 		OnCollisionWithPlatform(e);
+	}
+	if (dynamic_cast<CCloud*>(e->obj))
+	{
+		OnCollisionWithCloud(e);
 	}
 	if (dynamic_cast<CKoopas*>(e->obj))
 	{
@@ -217,9 +222,9 @@ void CGoomba::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 	int xxx = x;
-	DebugOut(L"============== x : %d \n",xxx);
-	DebugOut(L"============== start : %d \n", platform->GetStart());
-	DebugOut(L"============== end : %d \n", platform->GetEnd());
+	//DebugOut(L"============== x : %d \n",xxx);
+	//DebugOut(L"============== start : %d \n", platform->GetStart());
+	//DebugOut(L"============== end : %d \n", platform->GetEnd());
 	if (xxx >= platform->GetEnd())
 	{
 	vx = -GOOMBA_WALKING_SPEED;
@@ -228,9 +233,27 @@ void CGoomba::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 	if (xxx <= platform->GetStart())
 	{
 		vx = GOOMBA_WALKING_SPEED;
-		DebugOut(L"============== TUNR +++++ \n");
+		//DebugOut(L"============== TUNR +++++ \n");
 		//x = x + 10;
 	}
+}
 
-
+void CGoomba::OnCollisionWithCloud(LPCOLLISIONEVENT e)
+{
+	CCloud* cloud = dynamic_cast<CCloud*>(e->obj);
+	int xxx = x;
+	//DebugOut(L"============== x : %d \n", xxx);
+	//DebugOut(L"============== start : %d \n", cloud->GetStart());
+	//DebugOut(L"============== end : %d \n", cloud->GetEnd());
+	if (xxx >= cloud->GetEnd())
+	{
+		vx = -GOOMBA_WALKING_SPEED;
+		//x = x + 10;
+	}
+	if (xxx <= cloud->GetStart())
+	{
+		vx = GOOMBA_WALKING_SPEED;
+		//DebugOut(L"============== TUNR +++++ \n");
+		//x = x + 10;
+	}
 }
