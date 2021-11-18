@@ -40,7 +40,7 @@ public:
 	virtual int IsBlocking() { return 1; }
 	virtual int IsSpecial() { return 0; }
 	virtual int GetInside() { return this->inside; }
-	virtual void SetInside(float inside) { this->inside = inside; return; }
+	virtual void SetInside(int inside) { this->inside = inside; return; }
 	
 };
 

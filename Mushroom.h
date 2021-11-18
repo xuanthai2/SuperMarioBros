@@ -30,7 +30,7 @@ protected:
 	float ax;
 	float ay;
 	
-	float type;
+	int type;
 
 	ULONGLONG die_start;
 
@@ -46,9 +46,16 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CMushroom(float x, float y, float type);
+	CMushroom(float x, float y, float type) :CGameObject(x, y)
+	{
+		this->type = type;
+		this->ax = 0;
+		this->ay = MUSHROOM_GRAVITY;
+		//die_start = -1;
+		SetState(MUSHROOM_STATE_WALKING);
+	}
 	virtual void SetState(int state);
-	virtual float GetType() { return this->type; }
-	virtual void SetType(float type) { this->type = type; }
+	virtual int GetType() { return this->type; }
+	virtual void SetType(int type) { this->type = type; }
 };
 

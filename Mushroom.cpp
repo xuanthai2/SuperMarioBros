@@ -1,14 +1,7 @@
 #include "Mushroom.h"
 
 
-CMushroom::CMushroom(float x, float y, float type) :CGameObject(x, y)
-{
-	this->type = type;
-	this->ax = 0;
-	this->ay = MUSHROOM_GRAVITY;
-	//die_start = -1;
-	SetState(MUSHROOM_STATE_WALKING);
-}
+
 
 void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
