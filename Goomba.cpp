@@ -1,6 +1,9 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Collision.h"
+#include "Platform.h"
+#include "debug.h"
+
 CGoomba::CGoomba(float x, float y, float type) :CGameObject(x, y)
 {
 	this->ax = 0;
@@ -71,6 +74,10 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CPlatform*>(e->obj))
+	{
+		OnCollisionWithPlatform(e);
+	}
 	if (dynamic_cast<CKoopas*>(e->obj))
 	{
 		OnCollisionWithKoopas(e);
@@ -205,4 +212,25 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				//}
 			}
 	}
+}
+void CGoomba::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	int xxx = x;
+	DebugOut(L"============== x : %d \n",xxx);
+	DebugOut(L"============== start : %d \n", platform->GetStart());
+	DebugOut(L"============== end : %d \n", platform->GetEnd());
+	if (xxx >= platform->GetEnd())
+	{
+	vx = -GOOMBA_WALKING_SPEED;
+	//x = x + 10;
+	}
+	if (xxx <= platform->GetStart())
+	{
+		vx = GOOMBA_WALKING_SPEED;
+		DebugOut(L"============== TUNR +++++ \n");
+		//x = x + 10;
+	}
+
+
 }
