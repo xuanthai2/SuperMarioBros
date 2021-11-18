@@ -1,6 +1,10 @@
 #include "Koopas.h"
 
 #include "Collision.h"
+#include "debug.h"
+#include "Platform.h"
+#include "Cloud.h"
+#include "BrickQuestion.h"
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -54,7 +58,18 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
-
+	if (dynamic_cast<CCloud*>(e->obj))
+	{
+		OnCollisionWithCloud(e);
+	}
+	if (dynamic_cast<CPlatform*>(e->obj))
+	{
+		OnCollisionWithPlatform(e);
+	}
+	if (dynamic_cast<CBrickQuestion*>(e->obj))
+	{
+		OnCollisionWithQuestionBrick(e);
+	}
 	if (e->ny != 0)
 	{
 		vy = 0;
@@ -131,6 +146,57 @@ void CKoopas::SetState(int state)
 		break;
 	}
 }
+
+void CKoopas::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
+{
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	int xxx = x;
+	if (state == KOOPAS_STATE_WALKING)
+	{
+		if (xxx >= platform->GetEnd())
+		{
+			vx = -KOOPAS_WALKING_SPEED;
+			//x = x + 10;
+		}
+		if (xxx <= platform->GetStart())
+		{
+			vx = KOOPAS_WALKING_SPEED;
+			//x = x + 10;
+		}
+	}
+}
+
+void CKoopas::OnCollisionWithCloud(LPCOLLISIONEVENT e)
+{
+	CCloud* cloud = dynamic_cast<CCloud*>(e->obj);
+	int xxx = x;
+	if (state == KOOPAS_STATE_WALKING)
+	{
+		if (xxx >= cloud->GetEnd())
+		{
+			vx = -KOOPAS_WALKING_SPEED;
+			//x = x + 10;
+		}
+		if (xxx <= cloud->GetStart())
+		{
+			vx = KOOPAS_WALKING_SPEED;
+			//x = x + 10;
+		}
+	}
+}
+
+void CKoopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
+	if (state == KOOPAS_STATE_HIT)
+	{
+		if (brickquestion->GetState() != BRICKQUESTION_DIE)
+		{
+			brickquestion->SetState(BRICKQUESTION_DIE);
+		}
+	}
+}
+
 
 
 
