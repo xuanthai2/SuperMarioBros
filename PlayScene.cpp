@@ -168,10 +168,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
 
+		int start = (int)atof(tokens[1].c_str());
+		int end = start + (length - 1) * (int)atof(tokens[3].c_str());
+		//DebugOut(L"============== start : %d \n", end);
 		obj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
+			sprite_begin, sprite_middle, sprite_end ,start, end
 		);
 
 		break;
