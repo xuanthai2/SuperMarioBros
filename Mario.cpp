@@ -108,7 +108,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			{
 				//float xx, yy;
 				//brickquestion->GetPosition(xx, yy);
-				//DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
+				DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
 				//if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
 				//	obj = new CCoin(xx, yy);
 				//	obj->SetPosition(xx, yy);
@@ -131,7 +131,6 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 	e->obj->Delete();
-	DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom->GetType());
 
 	//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
 	if (mushroom->GetType() != MUSHROOM_TYPE_RED) {

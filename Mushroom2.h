@@ -29,7 +29,7 @@ protected:
 	float ax;
 	float ay;
 
-	float type;
+	int type;
 
 	ULONGLONG die_start;
 
@@ -56,7 +56,7 @@ public:
 		SetState(MUSHROOM2_STATE_IDLE);
 	}
 	virtual void SetState(int state);
-	virtual float GetType() { return this->type; }
-	virtual void SetType(float type) { this->type = type; }
+	virtual int GetType() { return this->type; }
+	virtual void SetType(int type) { this->type = type; }
 };
 

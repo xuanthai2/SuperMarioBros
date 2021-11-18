@@ -53,6 +53,7 @@ protected:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public: 	
