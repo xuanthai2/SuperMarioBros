@@ -125,7 +125,21 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//	vy = -GOOMBA_BOUNCE_SPEED;
 	//}
 
-	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4;
+	if ((state == GOOMBA_STATE_FLYING))
+	{
+		//DebugOut(L"============== y : %d \n", int(y));
+		if (int(y) <= yflying) {
+			vy += GOOMBA_BOUNCE_SPEED / 8;
+		}
+		if (int(y) >= (ystanding)) {
+			vy = -GOOMBA_BOUNCE_SPEED / 2;
+		}
+
+	}
+
+
+	//if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4 ;
+
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -182,7 +196,10 @@ void CGoomba::SetState(int state)
 		case GOOMBA_STATE_FLYING:
 			vx = -GOOMBA_WALKING_SPEED;
 			begin = GetTickCount64();
-			//vy = -GOOMBA_BOUNCE_SPEED/2;
+			this->ystanding = (int)y;
+			this->yflying = int(y) - 40;
+			//vy = -GOOMBA_BOUNCE_SPEED / 2;
+
 			//maxVy = abs(vy*4);
 			break;
 	}
@@ -205,10 +222,10 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				//if (GetType() == GOOMBA_TYPE_NORMAL) {
 					if (GetState() != GOOMBA_STATE_DIE) {
 						SetState(GOOMBA_STATE_DIE);
-						/*if (abs(this->vx) == GOOMBA_WALKING_SPEED)*/
-							vy = -GOOMBA_BOUNCE_SPEED;
-						/*else
-							vy = -GOOMBA_BOUNCE_SPEED;*/
+						//if (abs(this->vx) == goomba_walking_speed)
+						//	vy = -goomba_bounce_speed;
+						//else
+						//	vy = -goomba_bounce_speed;
 
 					}
 				//}

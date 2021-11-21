@@ -39,6 +39,10 @@ protected:
 	float ay; 
 	float type;
 	float oldvx;
+
+	int yflying;
+	int ystanding;
+
 	BOOLEAN isOnPlatform;
 
 	ULONGLONG begin;
@@ -62,4 +66,8 @@ public:
 	virtual void SetState(int state);
 	virtual float GetType() { return this->type; }
 	virtual void SetType(float type) { this->type = type; }
+
+	virtual int Getfd() { return this->yflying; }
+	virtual int Getsd() { return this->ystanding; }
+
 };
