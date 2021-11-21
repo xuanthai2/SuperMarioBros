@@ -212,6 +212,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		}
 		else if (goomba->GetType() == GOOMBA_TYPE_FLY)
 		{
+			//DebugOut(L"============== fly distance : %d \n",goomba->Getfd());
+			//DebugOut(L"============== fly standing : %d \n",goomba->Getsd());
 			if (goomba->GetState() == GOOMBA_STATE_FLYING)
 			{
 				goomba->SetState(GOOMBA_STATE_WALKING);
