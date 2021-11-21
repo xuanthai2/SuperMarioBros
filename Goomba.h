@@ -4,7 +4,7 @@
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
 
-#define GOOMBA_BOUNCE_SPEED  0.8f
+#define GOOMBA_BOUNCE_SPEED  0.6f
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -39,6 +39,8 @@ protected:
 	float ay; 
 	float type;
 	float oldvx;
+	int yflying;
+	int ystanding;
 	BOOLEAN isOnPlatform;
 
 	ULONGLONG begin;
@@ -61,5 +63,9 @@ public:
 	CGoomba(float x, float y, float type);
 	virtual void SetState(int state);
 	virtual float GetType() { return this->type; }
+
 	virtual void SetType(float type) { this->type = type; }
+
+	virtual int Getfd() { return this->yflying; }
+	virtual int Getsd() { return this->ystanding; }
 };
