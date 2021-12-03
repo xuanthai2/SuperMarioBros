@@ -29,3 +29,37 @@
 /.vs/SuperMarioBros/v16/ipch/AutoPCH/161c8854877cc253/CLOUD.ipch
 /.vs/SuperMarioBros/v16/ipch/AutoPCH/14518ebd652d6b37/MAIN.ipch
 /.vs/SuperMarioBros/v16/ipch/AutoPCH/1316944f5d5a339a/COIN.ipch
+
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
