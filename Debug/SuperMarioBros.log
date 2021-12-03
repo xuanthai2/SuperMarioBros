@@ -1,4 +1,0 @@
-﻿  Goomba.cpp
-C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Goomba.cpp(241,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Goomba.cpp(261,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\Downloads\Github Repo\SuperMarioBros\Debug\SuperMarioBros.exe
