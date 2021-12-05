@@ -1,20 +1,25 @@
 [ASSETS]
 mario.txt
+brick.txt
 coin.txt
-cloud.txt
 goomba.txt
+cloud.txt
 koopas.txt
 
+[OBJECTS]
 #Mario
 0	20	10
 
 
 #Goomba
-2	300	10
+2	260	30	355
 
 #Koopas
 3	270	10
 
+#Platform
+6	90	136	16	15	25	51000	52000	53000
+5	0	180	16	16	50	20001	20001	20001
 
 
 
