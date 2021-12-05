@@ -1,6 +1,0 @@
-﻿  Koopas.cpp
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(42,39): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\BrickQuestion.h(43,54): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\Koopas.cpp(153,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Xuan Thai\source\repos\SuperMarioBros\Koopas.cpp(172,10): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  SuperMarioBros.vcxproj -> C:\Users\Xuan Thai\source\repos\SuperMarioBros\Debug\SuperMarioBros.exe
