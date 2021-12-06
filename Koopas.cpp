@@ -5,6 +5,7 @@
 #include "Platform.h"
 #include "Cloud.h"
 #include "BrickQuestion.h"
+#include "Leaf.h"
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -56,8 +57,14 @@ void CKoopas::OnNoCollision(DWORD dt)
 
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CLeaf*>(e->obj))
+	{
+		OnCollisionWithLeaf(e);
+		DebugOut(L"============== SUCCES \n");
+	}
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
+
 	if (dynamic_cast<CCloud*>(e->obj))
 	{
 		OnCollisionWithCloud(e);
@@ -66,6 +73,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		OnCollisionWithPlatform(e);
 	}
+
 	if (dynamic_cast<CBrickQuestion*>(e->obj))
 	{
 		OnCollisionWithQuestionBrick(e);
@@ -202,6 +210,20 @@ void CKoopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 		}
 	}
 }
+
+
+void CKoopas::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+	if (state == KOOPAS_STATE_HIT)
+	{
+		if (leaf->GetState() != LEAF_STATE_BOUNCE)
+		{
+			leaf->SetState(LEAF_STATE_BOUNCE);
+		}
+	}
+}
+
 
 
 

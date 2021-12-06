@@ -19,6 +19,8 @@
 #include "Mushroom.h"
 #include "Mushroom2.h"
 
+#include "Leaf.h"
+
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -62,6 +64,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CMushroom2*>(e->obj))
 		OnCollisionWithMushroom2(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
@@ -230,8 +234,15 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
 				{
+					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level > MARIO_LEVEL_SMALL)
+				{
+					//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
@@ -318,8 +329,15 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			if (koopas->GetState() != KOOPAS_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level > MARIO_LEVEL_BIG)
 				{
+					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level > MARIO_LEVEL_SMALL)
+				{
+					//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
 				}
@@ -362,6 +380,57 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	//}
 	e->obj->Delete();
 	coin++;
+}
+
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+	if (e->ny > 0) {
+		if (leaf->GetState() != LEAF_STATE_BOUNCE)
+		{
+			leaf->SetState(LEAF_STATE_BOUNCE);
+		}
+		else {
+		
+			if (leaf->GetState() == LEAF_STATE_BOUNCE)
+			{
+			
+				e->obj->Delete();
+				if (level != MARIO_LEVEL_RACOON && level != MARIO_LEVEL_BIG)
+				{
+				
+					SetLevel(MARIO_LEVEL_BIG);
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+				}
+				else if (level != MARIO_LEVEL_RACOON && level != MARIO_LEVEL_SMALL)
+				{
+					SetLevel(MARIO_LEVEL_RACOON);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (leaf->GetState() == LEAF_STATE_BOUNCE)
+		{
+	
+			e->obj->Delete();
+			if (level != MARIO_LEVEL_RACOON && level != MARIO_LEVEL_BIG)
+			{
+		
+				SetLevel(MARIO_LEVEL_BIG);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+		
+			}
+			else if (level != MARIO_LEVEL_RACOON && level != MARIO_LEVEL_SMALL)
+			{
+				SetLevel(MARIO_LEVEL_RACOON);
+				vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+			}
+		}
+	}
+
+
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -559,12 +628,13 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (level == MARIO_LEVEL_RACOON)
+		aniId = GetAniIdRacoon();
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
-	else if (level == MARIO_LEVEL_RACOON)
-		aniId = GetAniIdRacoon();
+
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -672,13 +742,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
-	else if (level==MARIO_LEVEL_SMALL)
-	{
-		left = x - MARIO_SMALL_BBOX_WIDTH/2;
-		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
-		right = left + MARIO_SMALL_BBOX_WIDTH;
-		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
-	}
+
 	else if (level == MARIO_LEVEL_RACOON)
 	{
 		if (isSitting)
@@ -696,6 +760,13 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_RACOON_BBOX_HEIGHT;
 		}
 	}
+	else if (level == MARIO_LEVEL_SMALL)
+	{
+		left = x - MARIO_SMALL_BBOX_WIDTH / 2;
+		top = y - MARIO_SMALL_BBOX_HEIGHT / 2;
+		right = left + MARIO_SMALL_BBOX_WIDTH;
+		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+	}
 }
 
 void CMario::SetLevel(int l)
@@ -704,6 +775,7 @@ void CMario::SetLevel(int l)
 	if (this->level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		//y -= 30;
 	}
 	level = l;
 }

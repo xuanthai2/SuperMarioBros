@@ -42,6 +42,7 @@ protected:
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithCloud(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	
 	
 

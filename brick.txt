@@ -36,6 +36,11 @@
 
 21012	318	189	333	204	20
 
+
+#LEAF
+2112	154	137	169	152	30
+
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 
@@ -56,5 +61,8 @@
 
 #Mushroom Green
 12012	21012	100
+
+#Leaf
+21112	2112	100
 
 
