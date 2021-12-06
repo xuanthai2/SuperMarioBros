@@ -6,7 +6,7 @@
 
 #include "debug.h"
 
-#define MARIO_WALKING_SPEED		0.1f
+#define MARIO_WALKING_SPEED		0.08f
 #define MARIO_RUNNING_SPEED		0.2f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
@@ -114,15 +114,15 @@
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_RACOON	3
 
-#define MARIO_BIG_BBOX_WIDTH  18
-#define MARIO_BIG_BBOX_HEIGHT 26
+#define MARIO_BIG_BBOX_WIDTH  14
+#define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
-#define MARIO_RACOON_BBOX_WIDTH  18
+#define MARIO_RACOON_BBOX_WIDTH  14
 #define MARIO_RACOON_BBOX_HEIGHT 24
 #define MARIO_RACOON_SITTING_BBOX_WIDTH  14
-#define MARIO_RACOON_SITTING_BBOX_HEIGHT 14
+#define MARIO_RACOON_SITTING_BBOX_HEIGHT 16
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -160,6 +160,7 @@ class CMario : public CGameObject
 	void OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom2(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRacoon();
@@ -173,7 +174,7 @@ public:
 		ay = MARIO_GRAVITY; 
 
 		coinbounce = 0;
-		level = MARIO_LEVEL_RACOON;
+		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
 		isOnPlatform = false;

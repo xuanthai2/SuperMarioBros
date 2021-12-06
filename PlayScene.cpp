@@ -15,6 +15,7 @@
 #include "Mushroom.h"
 #include "Mushroom2.h"
 #include "Coin2.h"
+#include "Leaf.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -144,6 +145,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		else if (inside == BRICK_INSIDE_MUSHROOM_GREEN) {
 			obj = new CMushroom2(x + 0.5, y + 0.5, 400);
 			obj->SetPosition(x + 0.5, y + 0.5);
+			objects.push_back(obj);
+		}
+		if (inside == BRICK_INSIDE_LEAF)
+		{
+			obj = new CLeaf(x , y + 0.5);
+			obj->SetPosition(x , y + 0.5);
 			objects.push_back(obj);
 		}
 
