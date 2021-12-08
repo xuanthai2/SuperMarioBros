@@ -127,9 +127,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	//	vy = -GOOMBA_BOUNCE_SPEED;
 	//}
 
-	if (GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT) {
-		DebugOut(L"==============!@#!@#!@#  : %d \n", touchground);
-	}
+	//if (GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT) {
+	//	DebugOut(L"==============!@#!@#!@#  : %d \n", touchground);
+	//}
 
 	if ((state == GOOMBA_STATE_FLYING) && (GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT))
 	{

@@ -25,16 +25,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	DebugOut(L"============== %d \n", (int)y);
+	if (abs(vx) > abs(maxVx))
+	{
+		vx = maxVx;
+		isMaxspeed = true;
 
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
-
+	}
+	if (GetTickCount64() - fly_start > MARIO_FLY_TIME)
+	{
+		fly_start = 0;
+		flyable = 0;
+		ay = MARIO_GRAVITY;
+	}
+	if(isOnPlatform) 	ay = MARIO_GRAVITY;
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+		
 	}
-
+	isMaxspeed = false;
 	isOnPlatform = false;
 
 
@@ -565,14 +577,35 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdRacoon()
 {
 	int aniId = -1;
+	//if (state == MARIO_STATE_FALL_SLOWER)
+	//{
+	//	if (vx < 0)
+	//	{
+	//		aniId = ID_ANI_RACOON_FALL_SLOWER_LEFT;
+	//	}
+	//	else {
+	//		aniId = ID_ANI_RACOON_FALL_SLOWER_RIGHT;
+	//	}
+	//}
 	if (!isOnPlatform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
+			{
 				aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
-			else
+				if (ay < MARIO_GRAVITY)
+				{
+					aniId = ID_ANI_RACOON_FALL_SLOWER_RIGHT;
+				}
+			}
+			else {
 				aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
+				if (ay < MARIO_GRAVITY)
+				{
+					aniId = ID_ANI_RACOON_FALL_SLOWER_LEFT;
+				}
+			}
 		}
 		else
 		{
@@ -638,8 +671,8 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
-	
+	//RenderBoundingBox();
+
 	DebugOutTitle(L"Coins: %d", coin);
 }
 
@@ -650,6 +683,55 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+
+
+	case MARIO_STATE_FALL_SLOWER:
+		if (isSitting) break;
+		if (!isOnPlatform)
+		{
+			ay = MARIO_GRAVITY / 20;
+		}
+		break;
+	case MARIO_STATE_FALL_SLOWER_RELEASE:
+		if (isSitting) break;
+		//if (!isOnPlatform)
+		//{
+			ay = MARIO_GRAVITY;
+		//}
+		break;
+	case MARIO_STATE_FLY_MAXSPEED:
+		if (isSitting) break;
+		if (level != MARIO_LEVEL_RACOON) break;
+		if (!isOnPlatform)
+		{
+
+			if (flyable==1)
+			{
+				ay = MARIO_FLY_GRAVITY;
+				vy -= MARIO_FLY_SPEED;
+			}
+		}
+		break;
+	case MARIO_STATE_FLY_MAXSPEED_RELEASE:
+		if (isSitting) break;
+		if (level != MARIO_LEVEL_RACOON) break;
+		if (!isOnPlatform)
+		{
+
+			if (flyable == 1)
+			{
+				ay = 0.0003f;
+			}
+		}
+		break;
+
+
+
+
+
+
+
+
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
@@ -679,7 +761,14 @@ void CMario::SetState(int state)
 		if (isOnPlatform)
 		{
 			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			{
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
+				if (level == MARIO_LEVEL_RACOON)
+				{
+					StartFly();
+				}
+			}
+			
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
 		}
