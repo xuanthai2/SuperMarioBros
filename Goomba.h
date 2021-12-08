@@ -4,7 +4,10 @@
 #define GOOMBA_GRAVITY 0.002f
 #define GOOMBA_WALKING_SPEED 0.05f
 
-#define GOOMBA_BOUNCE_SPEED  0.8f
+#define GOOMBA_BOUNCE_SPEED  0.2f
+#define GOOMBA_FLY_TIMEOUT  1000
+
+
 
 #define GOOMBA_BBOX_WIDTH 16
 #define GOOMBA_BBOX_HEIGHT 14
@@ -40,12 +43,12 @@ protected:
 	float type;
 	float oldvx;
 
-	int yflying;
-	int ystanding;
+	//int yflying;
+	//int ystanding;
 
 	BOOLEAN isOnPlatform;
 
-	ULONGLONG begin;
+	ULONGLONG touchground;
 	ULONGLONG end;
 	ULONGLONG die_start;
 
@@ -67,7 +70,8 @@ public:
 	virtual float GetType() { return this->type; }
 	virtual void SetType(float type) { this->type = type; }
 
-	virtual int Getfd() { return this->yflying; }
-	virtual int Getsd() { return this->ystanding; }
+	//void StartUntouchable() { untouchable = 1; touchground = GetTickCount64(); }
+	//virtual int Getfd() { return this->yflying; }
+	//virtual int Getsd() { return this->ystanding; }
 
 };

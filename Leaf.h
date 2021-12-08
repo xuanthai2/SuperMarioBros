@@ -1,8 +1,9 @@
 #pragma once
 #include "GameObject.h"
 
-#define LEAF_GRAVITY 0.003f
+#define LEAF_GRAVITY 0.0001f
 #define LEAF_BOUNCE_SPEED 0.2f
+#define LEAF_WIND_SPEED 0.03f
 
 #define ID_ANI_LEAF 21112
 
@@ -18,6 +19,10 @@ class CLeaf : public CGameObject {
 protected:
 	float ax;
 	float ay;
+	int oldx;
+	int lefx;
+	int righx;
+	BOOLEAN isOnPlatform;
 
 public:
 	CLeaf(float x, float y) : CGameObject(x, y) {
@@ -25,6 +30,8 @@ public:
 		this->ay = 0;
 		vx = 0;
 		vy = 0;
+		this->oldx = x;
+		isOnPlatform = false;
 		SetState(LEAF_STATE_IDLE);
 	}
 
