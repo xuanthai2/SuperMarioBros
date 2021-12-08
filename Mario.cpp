@@ -25,7 +25,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	DebugOut(L"============== %d \n", (int)y);
+	//DebugOut(L"============== %d \n", (int)y);
 	if (abs(vx) > abs(maxVx))
 	{
 		vx = maxVx;
