@@ -10,7 +10,9 @@ CGoomba::CGoomba(float x, float y, float type) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	this->type = type;
+	touchground = 0;
 	die_start = -1;
+	isOnPlatform = false;
 	oldvx = -GOOMBA_WALKING_SPEED;
 
 	//isOnPlatform = false;
@@ -110,34 +112,42 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 	oldvx = vx;
-	end = GetTickCount64();
+	if (vy < 0) vy += GOOMBA_BOUNCE_SPEED /4;
 	//if (abs(vx) >= abs(maxVy)) vx = -maxVy;
-	ULONGLONG a;
-	a = (end - begin) % (begin);
+
 	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
 	{
 		isDeleted = true;
 		return;
 	}
+
 	//if ((state == GOOMBA_STATE_FLYING) && (a > 0) && (a < 2) )
 	//{
 	//	//begin = GetTickCount64();
 	//	vy = -GOOMBA_BOUNCE_SPEED;
 	//}
 
-	if ((state == GOOMBA_STATE_FLYING))
-	{
-		//DebugOut(L"============== y : %d \n", int(y));
-		if (int(y) <= yflying) {
-			vy += GOOMBA_BOUNCE_SPEED / 8;
-		}
-		if (int(y) >= (ystanding)) {
-			vy = -GOOMBA_BOUNCE_SPEED / 2;
-		}
-
+	if (GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT) {
+		DebugOut(L"==============!@#!@#!@#  : %d \n", touchground);
 	}
 
+	if ((state == GOOMBA_STATE_FLYING) && (GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT))
+	{
+		//DebugOut(L"============== y : %d \n", int(y));
+		//if (int(y) <= yflying) {
+		//	vy += GOOMBA_BOUNCE_SPEED / 8;
+		//}
+		//if (int(y) >= (ystanding)) {
+		//	vy = -GOOMBA_BOUNCE_SPEED / 2;
+		//}
+		
+		vy = -GOOMBA_BOUNCE_SPEED*2;
+	}
+	if (isOnPlatform && GetTickCount64() - touchground > GOOMBA_FLY_TIMEOUT) {
+		touchground = GetTickCount64();
+	}
 
+	isOnPlatform = false;
 	//if (vy < 0) vy += GOOMBA_BOUNCE_SPEED / 4 ;
 
 
@@ -194,10 +204,12 @@ void CGoomba::SetState(int state)
 			vx = oldvx;
 			break;
 		case GOOMBA_STATE_FLYING:
+			ay = GOOMBA_GRAVITY;
 			vx = -GOOMBA_WALKING_SPEED;
-			begin = GetTickCount64();
-			this->ystanding = (int)y;
-			this->yflying = int(y) - 40;
+			touchground = GetTickCount64();
+			//this->ystanding = (int)y;
+			//this->yflying = int(y) - 40;
+
 			//vy = -GOOMBA_BOUNCE_SPEED / 2;
 
 			//maxVy = abs(vy*4);

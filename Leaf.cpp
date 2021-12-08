@@ -31,6 +31,7 @@ void CLeaf::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0)
 	{
 		vy = 0;
+		if (e->ny < 0) isOnPlatform = true;
 	}
 	else if (e->nx != 0)
 	{
@@ -42,12 +43,30 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	if (vy < 0) vy += LEAF_BOUNCE_SPEED / 2;
+	if (vy < 0) vy += LEAF_BOUNCE_SPEED / 4;
 	//if ((state == MUSHROOM_STATE_DIE) && (GetTickCount64() - die_start > MUSHROOM_DIE_TIMEOUT))
 	//{
 	//	isDeleted = true;
 	//	return;
 	//}
+	if (isOnPlatform) {
+		vx = 0;
+	}
+
+	if (state == LEAF_STATE_BOUNCE)
+	{
+		int xxx = x;
+		if (xxx < lefx)
+		{
+			vx = LEAF_WIND_SPEED;
+		}
+		if (xxx > righx)
+		{
+			vx = -LEAF_WIND_SPEED;
+		}
+	}
+	
+
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -63,11 +82,14 @@ void CLeaf::SetState(int state)
 		vx = 0;
 		vy = 0;
 		ay = 0;
+		//
+		lefx = (int)x - 10;
+		righx = (int)x + 10;
 		break;
 	case LEAF_STATE_BOUNCE:
-		vy = -LEAF_BOUNCE_SPEED * 4;
-		vx = 0.2f;
-		ay = LEAF_GRAVITY;
+		vy = -LEAF_BOUNCE_SPEED *4;
+		vx = -LEAF_WIND_SPEED;
+		ay = LEAF_GRAVITY/3;
 		break;
 	}
 
