@@ -42,6 +42,9 @@
 #define MARIO_FLY_SPEED 0.03f;
 #define MARIO_FLY_GRAVITY 0.00002f;
 
+#define MARIO_STATE_ATTACK 105
+#define MARIO_STATE_ATTACK_RELEASE 106
+
 
 #pragma region ANIMATION_ID
 
@@ -114,6 +117,9 @@
 #define ID_ANI_RACOON_FALL_SLOWER_LEFT 2400
 #define ID_ANI_RACOON_FALL_SLOWER_RIGHT 2401
 
+#define ID_ANI_RACOON_ATTACK_LEFT 2500
+#define ID_ANI_RACOON_ATTACK_RIGHT 2501
+
 
 #pragma endregion
 
@@ -168,6 +174,8 @@ class CMario : public CGameObject
 	BOOLEAN isMaxspeed;
 	ULONGLONG fly_start;
 
+	BOOLEAN isAttacking;
+
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -177,6 +185,8 @@ class CMario : public CGameObject
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom2(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRacoon();
@@ -195,6 +205,7 @@ public:
 		untouchable_start = -1;
 		isOnPlatform = false;
 		isMaxspeed = false;
+		isAttacking = false;
 		coin = 0;
 		life = 1;
 	}
@@ -216,6 +227,6 @@ public:
 	int GetLevel() { return level; };
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
-	void StartFly() { flyable = 1; fly_start = GetTickCount64(); DebugOut(L"============== OK !@#!@#!@#!@#\n");};
+	void StartFly() { flyable = 1; fly_start = GetTickCount64(); /*DebugOut(L"============== OK !@#!@#!@#!@#\n");*/};
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

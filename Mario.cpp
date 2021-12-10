@@ -21,6 +21,8 @@
 
 #include "Leaf.h"
 
+#include "Brick.h"
+
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -38,7 +40,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		flyable = 0;
 		ay = MARIO_GRAVITY;
 	}
+	// no fly when stand on ground
 	if(isOnPlatform) 	ay = MARIO_GRAVITY;
+
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
@@ -46,9 +50,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 		
 	}
+
+	//if(isAttacking) DebugOut(L"============== _+_+_+_+_+_+_+ \n");
+
 	isMaxspeed = false;
 	isOnPlatform = false;
-
+	if (level != MARIO_LEVEL_RACOON)
+	{
+		isAttacking = false;
+	}
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -86,6 +96,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin2(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrickQuestion*>(e->obj))
@@ -114,6 +126,26 @@ void CMario::OnCollisionWithCoin2(LPCOLLISIONEVENT e)
 
 }
 
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e) 
+{
+	CBrick* brick= dynamic_cast<CBrick*>(e->obj);
+	if (e->ny < 0)
+	{
+
+	}
+	else if (e->ny > 0)
+	{
+		e->obj->Delete();
+	}
+	else
+	{
+		if (isAttacking)
+		{
+			e->obj->Delete();
+		}
+	}
+}
+
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 	CBrickQuestion* brickquestion = dynamic_cast<CBrickQuestion*>(e->obj);
@@ -137,10 +169,22 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 
 				brickquestion->SetState(BRICKQUESTION_DIE);
 			}
-		
+	}
+	else if (e->ny < 0)
+	{
 
 	}
-	
+	else
+	{
+		if (brickquestion->GetState() != BRICKQUESTION_DIE)
+		{
+			if (isAttacking)
+			{
+				DebugOut(L"============== _+_+_+_+_+_+_+ \n");
+				brickquestion->SetState(BRICKQUESTION_DIE);
+			}
+		}
+	}
 }
 
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
@@ -157,7 +201,10 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 		}
 	}
 	else if (mushroom->GetType() != MUSHROOM_TYPE_GREEN) {
-		SetLevel(MARIO_LEVEL_BIG);
+		if (level < MARIO_LEVEL_BIG)
+		{
+			SetLevel(MARIO_LEVEL_BIG);
+		}
 	}
 }
 
@@ -187,7 +234,10 @@ void CMario::OnCollisionWithMushroom2(LPCOLLISIONEVENT e)
 					}
 				}
 				else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
-					SetLevel(MARIO_LEVEL_BIG);
+					if (level < MARIO_LEVEL_BIG)
+					{
+						SetLevel(MARIO_LEVEL_BIG);
+					}
 				}
 			}
 		}
@@ -206,7 +256,10 @@ void CMario::OnCollisionWithMushroom2(LPCOLLISIONEVENT e)
 			}
 		}
 		else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
-			SetLevel(MARIO_LEVEL_BIG);
+			if (level < MARIO_LEVEL_BIG)
+			{
+				SetLevel(MARIO_LEVEL_BIG);
+			}
 		}
 	}
 }
@@ -246,22 +299,48 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_BIG)
+				if (isAttacking)
 				{
-					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
-					level = MARIO_LEVEL_BIG;
-					StartUntouchable();
+					if (goomba->GetType() == GOOMBA_TYPE_NORMAL)
+					{
+						if (goomba->GetState() != GOOMBA_STATE_DIE)
+						{
+							goomba->SetState(GOOMBA_STATE_DIE);
+							goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
+						}
+					}
+					else if (goomba->GetType() == GOOMBA_TYPE_FLY)
+					{
+						if (goomba->GetState() == GOOMBA_STATE_FLYING)
+						{
+							goomba->SetState(GOOMBA_STATE_WALKING);
+						}
+						else if (goomba->GetState() == GOOMBA_STATE_WALKING)
+						{
+							goomba->SetState(GOOMBA_STATE_DIE);
+							goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
+						}
+					}
 				}
-				else if (level > MARIO_LEVEL_SMALL)
-				{
-					//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
+				else {
+
+					if (level > MARIO_LEVEL_BIG)
+					{
+						vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+					else if (level > MARIO_LEVEL_SMALL)
+					{
+						//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+						level = MARIO_LEVEL_SMALL;
+						StartUntouchable();
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE >>> \n");
+						SetState(MARIO_STATE_DIE);
+					}
 				}
 			}
 		}
@@ -339,41 +418,56 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != KOOPAS_STATE_DIE)
+			if (isAttacking)
 			{
-				if (level > MARIO_LEVEL_BIG)
+				if (koopas->GetState()!=KOOPAS_STATE_DIE)
 				{
-					vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
-					level = MARIO_LEVEL_BIG;
-					StartUntouchable();
+					koopas->SetState(KOOPAS_STATE_DIE);
+					koopas->SetSpeed(0, -KOOPAS_BOUNCE_SPEED * 2);
 				}
-				else if (level > MARIO_LEVEL_SMALL)
+				else if (koopas->GetState() == KOOPAS_STATE_DIE)
 				{
-					//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
+					koopas->SetSpeed(0, -KOOPAS_BOUNCE_SPEED * 2);
 				}
 			}
-			if (koopas->GetState() == KOOPAS_STATE_DIE)
+			else
 			{
-				float kx, ky;
-				koopas->GetPosition(kx, ky);
-				if (x < kx)
+				if (koopas->GetState() != KOOPAS_STATE_DIE)
 				{
-					koopas->SetSpeed(KOOPAS_HIT_SPEED,0.2f);
-					koopas->SetState(KOOPAS_STATE_HIT);
+					if (level > MARIO_LEVEL_BIG)
+					{
+						vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+					else if (level > MARIO_LEVEL_SMALL)
+					{
+						//vy = -MARIO_JUMP_DEFLECT_SPEED / 2;
+						level = MARIO_LEVEL_SMALL;
+						StartUntouchable();
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE >>> \n");
+						SetState(MARIO_STATE_DIE);
+					}
 				}
-				if (x > kx)
+				if (koopas->GetState() == KOOPAS_STATE_DIE)
 				{
-					koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
-					koopas->SetState(KOOPAS_STATE_HIT);
-				}
+					float kx, ky;
+					koopas->GetPosition(kx, ky);
+					if (x < kx)
+					{
+						koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
+						koopas->SetState(KOOPAS_STATE_HIT);
+					}
+					if (x > kx)
+					{
+						koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+						koopas->SetState(KOOPAS_STATE_HIT);
+					}
 
+				}
 			}
 		}
 	}
@@ -587,6 +681,13 @@ int CMario::GetAniIdRacoon()
 	//		aniId = ID_ANI_RACOON_FALL_SLOWER_RIGHT;
 	//	}
 	//}
+	if (isAttacking)
+	{
+		if (nx > 0)
+			aniId = ID_ANI_RACOON_ATTACK_LEFT;
+		else
+			aniId = ID_ANI_RACOON_ATTACK_RIGHT;
+	}
 	if (!isOnPlatform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
@@ -623,7 +724,17 @@ int CMario::GetAniIdRacoon()
 			else
 				aniId = ID_ANI_RACOON_SIT_RIGHT;
 		}
+		else if (isAttacking)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_RACOON_ATTACK_LEFT;
+			else
+				aniId = ID_ANI_RACOON_ATTACK_RIGHT;
+		}
 		else
+		{
+
+
 			if (vx == 0)
 			{
 				if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
@@ -647,6 +758,7 @@ int CMario::GetAniIdRacoon()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
+		}
 
 	if (aniId == -1) aniId = ID_ANI_RACOON_IDLE_RIGHT;
 
@@ -671,7 +783,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	DebugOutTitle(L"Coins: %d", coin);
 }
@@ -683,13 +795,29 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	
+	case MARIO_STATE_ATTACK:
+		if (isSitting) break;
+		if (level == MARIO_LEVEL_RACOON)
+		{
+			isAttacking = true;
+		}
+		break;
+	case MARIO_STATE_ATTACK_RELEASE:
+		if (level == MARIO_LEVEL_RACOON)
+		{
+			state = MARIO_STATE_IDLE;
+			isAttacking = false;
+		}
 
+		break;
 
 	case MARIO_STATE_FALL_SLOWER:
 		if (isSitting) break;
 		if (!isOnPlatform)
 		{
 			ay = MARIO_GRAVITY / 20;
+			vy = 0;
 		}
 		break;
 	case MARIO_STATE_FALL_SLOWER_RELEASE:
@@ -697,6 +825,7 @@ void CMario::SetState(int state)
 		//if (!isOnPlatform)
 		//{
 			ay = MARIO_GRAVITY;
+
 		//}
 		break;
 	case MARIO_STATE_FLY_MAXSPEED:

@@ -31,6 +31,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetState(MARIO_STATE_FLY_MAXSPEED);
 		}
 		break;
+	case DIK_Z:
+		mario->SetState(MARIO_STATE_ATTACK);
+		break;
 
 	//
 	case DIK_1:
@@ -76,6 +79,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		{
 			mario->SetState(MARIO_STATE_FLY_MAXSPEED_RELEASE);
 		}
+		break;
+	case DIK_Z:
+		mario->SetState(MARIO_STATE_ATTACK_RELEASE);
 		break;
 	}
 }
