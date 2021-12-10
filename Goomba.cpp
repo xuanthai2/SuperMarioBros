@@ -198,7 +198,6 @@ void CGoomba::SetState(int state)
 			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE)/2;
 			vx = 0;
 			vy = 0;
-			ay = 0; 
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = oldvx;
@@ -213,6 +212,10 @@ void CGoomba::SetState(int state)
 			//vy = -GOOMBA_BOUNCE_SPEED / 2;
 
 			//maxVy = abs(vy*4);
+			break;
+		case GOOMBA_STATE_BOUNCE:
+			state == GOOMBA_STATE_DIE;
+			vy = -GOOMBA_BOUNCE_SPEED * 2;
 			break;
 	}
 }

@@ -126,31 +126,31 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 
 		if (inside == BRICK_INSIDE_COIN) {
-			obj = new CCoin2(x+0.5, y+0.5, 0);
-			obj->SetPosition(x+ 0.5, y+0.5);
+			obj = new CCoin2(x, y+0.25, 0);
+			obj->SetPosition(x, y+0.25);
 			objects.push_back(obj);
 			//DebugOut(L"============== This line has been made \n");
 		}
 		else if (inside == BRICK_INSIDE_COINS) {
-			obj = new CCoin2(x + 0.5, y + 0.5, 5);
-			obj->SetPosition(x + 0.5, y + 0.5);
+			obj = new CCoin2(x , y + 0.25, 5);
+			obj->SetPosition(x , y + 0.25);
 			objects.push_back(obj);
 		}
 		if (inside == BRICK_INSIDE_MUSHROOM_RED) {
 			
-			obj = new CMushroom2(x + 0.75, y + 0.5,399);
-			obj->SetPosition(x + 0.75, y + 0.5);
+			obj = new CMushroom2(x , y + 0.25,399);
+			obj->SetPosition(x , y + 0.25);
 			objects.push_back(obj);
 		}
 		else if (inside == BRICK_INSIDE_MUSHROOM_GREEN) {
-			obj = new CMushroom2(x + 0.5, y + 0.5, 400);
-			obj->SetPosition(x + 0.5, y + 0.5);
+			obj = new CMushroom2(x, y + 0.25, 400);
+			obj->SetPosition(x , y + 0.25);
 			objects.push_back(obj);
 		}
 		if (inside == BRICK_INSIDE_LEAF)
 		{
-			obj = new CLeaf(x , y + 0.5);
-			obj->SetPosition(x , y + 0.5);
+			obj = new CLeaf(x , y + 0.25);
+			obj->SetPosition(x , y + 0.25);
 			objects.push_back(obj);
 		}
 
