@@ -104,6 +104,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		state = KOOPAS_STATE_WALKING;
 		y = y- 5;
 		vx = -KOOPAS_WALKING_SPEED;
+		//SetState(KOOPAS_STATE_WALKING);
+
 	//	DebugOut(L"============== SUCCESS ======== : %d \n", state);
 		return;
 	}
@@ -150,6 +152,7 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_WALKING:
 		vx = -KOOPAS_WALKING_SPEED;
+		ay = KOOPAS_GRAVITY;
 		break;
 	case KOOPAS_STATE_HIT:
 		//y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;

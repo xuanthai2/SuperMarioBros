@@ -176,6 +176,9 @@ class CMario : public CGameObject
 
 	BOOLEAN isAttacking;
 
+	BOOLEAN Holdable;
+	BOOLEAN isHolding;
+
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -186,6 +189,7 @@ class CMario : public CGameObject
 	void OnCollisionWithMushroom2(LPCOLLISIONEVENT e);
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithPortalmini(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -206,6 +210,8 @@ public:
 		isOnPlatform = false;
 		isMaxspeed = false;
 		isAttacking = false;
+		Holdable = false;
+		isHolding = false;
 		coin = 0;
 		life = 1;
 	}
