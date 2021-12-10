@@ -109,6 +109,10 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	
+
+
+
+
 	vy += ay * dt;
 	vx += ax * dt;
 	oldvx = vx;
@@ -119,6 +123,10 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		isDeleted = true;
 		return;
+	}
+	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > 5000))
+	{
+		isDeleted = false;
 	}
 
 	//if ((state == GOOMBA_STATE_FLYING) && (a > 0) && (a < 2) )
@@ -237,11 +245,11 @@ void CGoomba::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				//if (GetType() == GOOMBA_TYPE_NORMAL) {
 					if (GetState() != GOOMBA_STATE_DIE) {
 						SetState(GOOMBA_STATE_DIE);
+						SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
 						//if (abs(this->vx) == goomba_walking_speed)
 						//	vy = -goomba_bounce_speed;
 						//else
 						//	vy = -goomba_bounce_speed;
-
 					}
 				//}
 				//else {

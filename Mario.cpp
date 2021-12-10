@@ -10,6 +10,8 @@
 #include "Coin2.h"
 
 #include "Portal.h"
+#include "Portalmini.h"
+
 
 #include "Collision.h"
 
@@ -60,6 +62,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isAttacking = false;
 	}
 
+
+	if (!Holdable) isHolding = false; 
+
+
+
+
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -102,7 +111,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrickQuestion*>(e->obj))
 		OnCollisionWithBrickQuestion(e);
-
+	else if (dynamic_cast<CPortalmini*>(e->obj))
+		OnCollisionWithPortalmini(e);
+	
 }
 
 void CMario::OnCollisionWithCoin2(LPCOLLISIONEVENT e)
@@ -121,7 +132,26 @@ void CMario::OnCollisionWithCoin2(LPCOLLISIONEVENT e)
 			coin2->SetState(COIN2_STATE_DIE);
 		}
 		coin++;
-	
+	}
+	else if (e->ny < 0)
+	{
+
+	}
+	else
+	{
+		if (isAttacking)
+		{
+			if (coin2->GetType() == COIN2_TYPE_MULTI)
+			{
+				coinbounce++;
+				coin2->SetTB(coinbounce);
+				coin2->SetState(COIN2_STATE_DIE);
+			}
+			if (coin2->GetType() == COIN2_TYPE_ONCE)
+			{
+				coin2->SetState(COIN2_STATE_DIE);
+			}
+		}
 	}
 
 }
@@ -223,7 +253,6 @@ void CMario::OnCollisionWithMushroom2(LPCOLLISIONEVENT e)
 
 
 				e->obj->Delete();
-				DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom2->GetType());
 
 				//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
 				if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
@@ -242,25 +271,56 @@ void CMario::OnCollisionWithMushroom2(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+	else if (e->ny < 0)
+	{
+		if (mushroom2->GetState() == MUSHROOM2_STATE_WALKING)
+		{
+			e->obj->Delete();
+			//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
+			if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
+				if (level < MARIO_LEVEL_BIG)
+				{
+	
+					SetLevel(MARIO_LEVEL_BIG);
+					life++;
+				}
+			}
+			else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
+				if (level < MARIO_LEVEL_BIG)
+				{
+					SetLevel(MARIO_LEVEL_BIG);
+				}
+			}
+		}
+	}
 	else
 	{
-		e->obj->Delete();
-		DebugOut(L"============== MUSHROOM TYPE : %d \n", mushroom2->GetType());
-
-		//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
-		if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
-			if (level < MARIO_LEVEL_BIG)
+		if (isAttacking)
+		{
+			if (mushroom2->GetState() != MUSHROOM2_STATE_WALKING && mushroom2->GetState() != MUSHROOM2_STATE_DIE)
 			{
-				SetLevel(MARIO_LEVEL_BIG);
-				life++;
+				mushroom2->SetState(MUSHROOM2_STATE_WALKING);
 			}
 		}
-		else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
-			if (level < MARIO_LEVEL_BIG)
+		else if (mushroom2->GetState() == MUSHROOM2_STATE_WALKING)
 			{
-				SetLevel(MARIO_LEVEL_BIG);
+				e->obj->Delete();
+				//vy = -MARIO_JUMP_DEFLECT_SPEED/2;
+				if (mushroom2->GetType() != MUSHROOM_TYPE_RED) {
+					if (level < MARIO_LEVEL_BIG)
+					{
+						
+						SetLevel(MARIO_LEVEL_BIG);
+						life++;
+					}
+				}
+				else if (mushroom2->GetType() != MUSHROOM_TYPE_GREEN) {
+					if (level < MARIO_LEVEL_BIG)
+					{
+						SetLevel(MARIO_LEVEL_BIG);
+					}
+				}
 			}
-		}
 	}
 }
 
@@ -301,26 +361,28 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (isAttacking)
 				{
-					if (goomba->GetType() == GOOMBA_TYPE_NORMAL)
-					{
-						if (goomba->GetState() != GOOMBA_STATE_DIE)
-						{
-							goomba->SetState(GOOMBA_STATE_DIE);
-							goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
-						}
-					}
-					else if (goomba->GetType() == GOOMBA_TYPE_FLY)
-					{
-						if (goomba->GetState() == GOOMBA_STATE_FLYING)
-						{
-							goomba->SetState(GOOMBA_STATE_WALKING);
-						}
-						else if (goomba->GetState() == GOOMBA_STATE_WALKING)
-						{
-							goomba->SetState(GOOMBA_STATE_DIE);
-							goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
-						}
-					}
+					goomba->SetState(GOOMBA_STATE_DIE);
+					goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
+					//if (goomba->GetType() == GOOMBA_TYPE_NORMAL)
+					//{
+					//	if (goomba->GetState() != GOOMBA_STATE_DIE)
+					//	{
+					//		goomba->SetState(GOOMBA_STATE_DIE);
+					//		goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
+					//	}
+					//}
+					//else if (goomba->GetType() == GOOMBA_TYPE_FLY)
+					//{
+					//	if (goomba->GetState() == GOOMBA_STATE_FLYING)
+					//	{
+					//		goomba->SetState(GOOMBA_STATE_WALKING);
+					//	}
+					//	else if (goomba->GetState() == GOOMBA_STATE_WALKING)
+					//	{
+					//		goomba->SetState(GOOMBA_STATE_DIE);
+					//		goomba->SetSpeed(0, -GOOMBA_BOUNCE_SPEED * 2);
+					//	}
+					//}
 				}
 				else {
 
@@ -361,58 +423,32 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		}
 		else if (koopas->GetState() != KOOPAS_STATE_WALKING && (koopas->GetState() != KOOPAS_STATE_HIT))
 		{
-			//koopas->SetState(KOOPAS_STATE_HIT);
-			//koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
-			float kx, ky;
-			koopas->GetPosition(kx, ky);
-			if (x <= kx)
+			if (Holdable)
 			{
-				koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
-				koopas->SetState(KOOPAS_STATE_HIT);
+				
 			}
-			if (x > kx)
+			else
 			{
-				koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
-				koopas->SetState(KOOPAS_STATE_HIT);
+				float kx, ky;
+				koopas->GetPosition(kx, ky);
+				if (x <= kx)
+				{
+					koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
+					koopas->SetState(KOOPAS_STATE_HIT);
+				}
+				if (x > kx)
+				{
+					koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+					koopas->SetState(KOOPAS_STATE_HIT);
+				}
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else if (koopas->GetState() == KOOPAS_STATE_HIT)
 		{
 			koopas->SetState(KOOPAS_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
-		else if (koopas->GetState() == KOOPAS_STATE_DIE)
-		{
-			//float kx, ky;
-			//float vx, vy;
-			//koopas->GetSpeed(vx, vy);
-			//koopas->GetPosition(kx, ky);
-			koopas->SetState(KOOPAS_STATE_HIT);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-
-			//if (x >= kx)
-			//{
-			//	koopas->SetSpeed(-KOOPAS_HIT_SPEED, vy);
-			//	vy = -MARIO_JUMP_DEFLECT_SPEED;
-			//}
-			//else
-			//{
-			//	koopas->SetSpeed(KOOPAS_HIT_SPEED, vy);
-			//	vy = -MARIO_JUMP_DEFLECT_SPEED;
-			//}
-		}
-		//if (koopas->GetState() != KOOPAS_STATE_HIT && koopas->GetState() != KOOPAS_STATE_WALKING)
-		//{
-		//	koopas->SetState(KOOPAS_STATE_HIT);
-		//	vy = -MARIO_JUMP_DEFLECT_SPEED;
-		//}
-		//else
-		//{
-		//	koopas->SetState(KOOPAS_STATE_HIT);
-		//	vy = -MARIO_JUMP_DEFLECT_SPEED;
-		//}
-
 	}
 	else // hit by Koompas
 	{
@@ -454,19 +490,25 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				}
 				if (koopas->GetState() == KOOPAS_STATE_DIE)
 				{
-					float kx, ky;
-					koopas->GetPosition(kx, ky);
-					if (x < kx)
+					if (Holdable)
 					{
-						koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
-						koopas->SetState(KOOPAS_STATE_HIT);
+					
 					}
-					if (x > kx)
+					else
 					{
-						koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
-						koopas->SetState(KOOPAS_STATE_HIT);
+						float kx, ky;
+						koopas->GetPosition(kx, ky);
+						if (x < kx)
+						{
+							koopas->SetSpeed(KOOPAS_HIT_SPEED, 0.2f);
+							koopas->SetState(KOOPAS_STATE_HIT);
+						}
+						if (x > kx)
+						{
+							koopas->SetSpeed(-KOOPAS_HIT_SPEED, +0.2f);
+							koopas->SetState(KOOPAS_STATE_HIT);
+						}
 					}
-
 				}
 			}
 		}
@@ -517,7 +559,15 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		if (leaf->GetState() == LEAF_STATE_BOUNCE)
+		if (leaf->GetState() != LEAF_STATE_BOUNCE)
+		{
+			if (isAttacking)
+			{
+				leaf->SetState(LEAF_STATE_BOUNCE);
+			}
+		}
+
+		else if (leaf->GetState() == LEAF_STATE_BOUNCE)
 		{
 	
 			e->obj->Delete();
@@ -544,6 +594,19 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
+
+void CMario::OnCollisionWithPortalmini(LPCOLLISIONEVENT e)
+{
+	CPortalmini* p = (CPortalmini*)e->obj;
+	int gx, gy;
+	gx = p->Getgx();
+	gy = p->Getgy();
+	SetPosition((float)gx, (float)gy);
+}
+
+
+
+
 
 //
 // Get animation ID for small Mario
@@ -668,6 +731,7 @@ int CMario::GetAniIdBig()
 	return aniId;
 }
 
+
 int CMario::GetAniIdRacoon()
 {
 	int aniId = -1;
@@ -687,6 +751,10 @@ int CMario::GetAniIdRacoon()
 			aniId = ID_ANI_RACOON_ATTACK_LEFT;
 		else
 			aniId = ID_ANI_RACOON_ATTACK_RIGHT;
+	}
+	if (Holdable)
+	{
+
 	}
 	if (!isOnPlatform)
 	{
@@ -866,24 +934,36 @@ void CMario::SetState(int state)
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
+		//
+		Holdable = true;
+		//
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
+		//
+		Holdable = true;
+		//
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
+		//
+		Holdable = false;
+		//
 		break;
 	case MARIO_STATE_WALKING_LEFT:
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
+		//
+		Holdable = false;
+		//
 		break;
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
