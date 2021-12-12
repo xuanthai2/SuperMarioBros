@@ -18,6 +18,7 @@ protected:
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> shinebricks;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -40,7 +41,11 @@ public:
 	void Clear();
 	void PurgeDeletedObjects();
 
+	void HandleShineBrick();
+
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+
+	static bool ShineBrickDeleted(const LPGAMEOBJECT& o);
 };
 
 typedef CPlayScene* LPPLAYSCENE;

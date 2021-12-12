@@ -17,6 +17,7 @@
 #include "Coin2.h"
 #include "Leaf.h"
 #include "Portalmini.h"
+#include "P.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -118,7 +119,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float type = (float)atof(tokens[3].c_str());
 		obj = new CGoomba(x, y, type); break;
 	}
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BRICK: 
+	{
+		int inside = (int)atof(tokens[3].c_str());
+		if (inside == BRICK_TYPE_P)
+		{
+			obj = new CP(x, y);
+			obj->SetPosition(x, y);
+			objects.push_back(obj);
+		}
+		
+		obj = new CBrick(x, y, inside);
+
+		break;
+	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_BIRCKQUESTION: 
@@ -254,7 +268,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x, y);
 		player = (CMario*)obj;
-
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 

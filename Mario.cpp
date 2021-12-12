@@ -25,6 +25,8 @@
 
 #include "Brick.h"
 
+#include "P.h"
+
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -113,6 +115,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrickQuestion(e);
 	else if (dynamic_cast<CPortalmini*>(e->obj))
 		OnCollisionWithPortalmini(e);
+	else if (dynamic_cast<CP*>(e->obj))
+		OnCollisionWithP(e);
 	
 }
 
@@ -165,13 +169,19 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	}
 	else if (e->ny > 0)
 	{
-		e->obj->Delete();
+		if (brick->GetState() == BRICK_STATE_DIE)
+		{
+			e->obj->Delete();
+		}
 	}
 	else
 	{
 		if (isAttacking)
 		{
-			e->obj->Delete();
+			if (brick->GetState() == BRICK_STATE_DIE)
+			{
+				e->obj->Delete();
+			}
 		}
 	}
 }
@@ -602,6 +612,27 @@ void CMario::OnCollisionWithPortalmini(LPCOLLISIONEVENT e)
 	gx = p->Getgx();
 	gy = p->Getgy();
 	SetPosition((float)gx, (float)gy);
+}
+
+void CMario::OnCollisionWithP(LPCOLLISIONEVENT e)
+{
+	CP* p = (CP*)e->obj;
+	if (e->ny > 0) 
+	{
+		if (p->GetState() == P_STATE_IDLE)
+		{
+			p->SetState(P_STATE_LIVE);
+		}
+		else
+		{
+			e->obj->Delete();
+		}
+	}
+	else
+	{
+		e->obj->Delete();
+	}
+
 }
 
 
