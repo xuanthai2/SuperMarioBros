@@ -67,7 +67,7 @@ koopas.txt
 #2	200	30
 
 #Koopas
-#3	270	10
+3	270	10
 
 
 #QuestionBrick

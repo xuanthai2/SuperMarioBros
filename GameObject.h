@@ -30,6 +30,8 @@ protected:
 
 	bool isDeleted; 
 
+	bool isHidden;
+
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -38,7 +40,10 @@ public:
 
 	int GetState() { return this->state; }
 	virtual void Delete() { isDeleted = true;  }
-	bool IsDeleted() { return isDeleted; }
+	bool IsDeleted() { return isDeleted; }	
+	
+	virtual void Hide() { isHidden = true;  }
+	bool IsHidden() { return isHidden; }
 
 	void RenderBoundingBox();
 
@@ -73,4 +78,6 @@ public:
 	~CGameObject();
 
 	static bool IsDeleted(const LPGAMEOBJECT &o) { return o->isDeleted; }
+
+	static bool IsHidden(const LPGAMEOBJECT &o) { return o->isHidden; }
 };
