@@ -196,7 +196,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			{
 				//float xx, yy;
 				//brickquestion->GetPosition(xx, yy);
-				DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
+//				DebugOut(L"============== BRICK INSIDE : %d \n", brickquestion->GetInside());
 				//if (brickquestion->GetInside() == BRICK_INSIDE_COIN) {
 				//	obj = new CCoin(xx, yy);
 				//	obj->SetPosition(xx, yy);
@@ -220,7 +220,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 		{
 			if (isAttacking)
 			{
-				DebugOut(L"============== _+_+_+_+_+_+_+ \n");
+			//	DebugOut(L"============== _+_+_+_+_+_+_+ \n");
 				brickquestion->SetState(BRICKQUESTION_DIE);
 			}
 		}

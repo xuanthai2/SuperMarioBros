@@ -18,6 +18,7 @@
 #include "Leaf.h"
 #include "Portalmini.h"
 #include "P.h"
+#include "HUD.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -178,6 +179,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float mushroomtype = (float)atof(tokens[3].c_str());
 		obj = new CMushroom(x, y, mushroomtype); 
 
+		break;
+	}
+	case OBJECT_TYPE_HUD:
+	{
+		int type = (int)atof(tokens[3].c_str());
+		obj = new CHUD(x, y, type);
+		obj->SetPosition(x, y);
+		hud.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -381,8 +390,11 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() /1.5f;
 
-	//if (cx < 0) cx = 0;
-	//if (cy > 0) cy = 0;
+	//hud->SetPosition(cx + 120, cy + 170);
+
+	if (cx < 0) cx = 0;
+	if (cx > 2745) cx = 2745;
+	if (cy < -350) cy = -350;
 	CGame::GetInstance()->SetCamPos(cx,cy);
 
 	PurgeDeletedObjects();

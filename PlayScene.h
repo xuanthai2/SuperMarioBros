@@ -16,6 +16,8 @@ class CPlayScene: public CScene
 protected: 
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
+				
+	vector<LPGAMEOBJECT> hud;
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> shinebricks;

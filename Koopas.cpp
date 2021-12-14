@@ -229,19 +229,15 @@ void CKoopas::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	brick->GetPosition(bx,bxx);
 	if (e->ny < 0)
 	{
-		if (state == KOOPAS_STATE_WALKING)
+		if (brick->GetState() == BRICK_STATE_STAND && state==KOOPAS_STATE_WALKING)
 		{
 			if (xxx >= ((int)bx + 10))
 			{
-				DebugOut(L"============== SUCCES \n");
 				vx = -KOOPAS_WALKING_SPEED;
-				//x = x + 10;
 			}
-			if (xxx <= (int)bx)
+			if (xxx <= (int)bx-10)
 			{
-				DebugOut(L"============== SUCCES \n");
 				vx = KOOPAS_WALKING_SPEED;
-				//x = x + 10;
 			}
 		}
 
