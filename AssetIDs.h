@@ -8,6 +8,7 @@
 #define ID_TEX_ENEMY 10
 #define ID_TEX_MISC 20
 #define ID_TEX_BG 30
+#define ID_TEX_HUD 40
 
 
 #define OBJECT_TYPE_MARIO	0
@@ -22,6 +23,7 @@
 #define OBJECT_TYPE_BIRCKQUESTION 7
 #define OBJECT_TYPE_MICS 8
 #define OBJECT_TYPE_MUSHROOM 9
+#define OBJECT_TYPE_HUD 52
 
 
 #define OBJECT_TYPE_PORTAL	50

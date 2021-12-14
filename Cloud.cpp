@@ -20,7 +20,7 @@ void CCloud::Render()
 	if (length > 1)
 		s->Get(this->spriteIdEnd)->Draw(xx, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 void CCloud::RenderBoundingBox()
 {
