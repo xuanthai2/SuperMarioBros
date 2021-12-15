@@ -28,6 +28,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
+	p = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -120,18 +121,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float type = (float)atof(tokens[3].c_str());
 		obj = new CGoomba(x, y, type); break;
 	}
+	case OBJECT_TYPE_P:
+	{
+		obj = new CP(x, y+0.25);
+		p = (CP*)obj;
+
+		break;
+	}
 	case OBJECT_TYPE_BRICK: 
 	{
 		int inside = (int)atof(tokens[3].c_str());
-		if (inside == BRICK_TYPE_P)
-		{
-			obj = new CP(x, y);
-			obj->SetPosition(x, y);
-			objects.push_back(obj);
-		}
 		
 		obj = new CBrick(x, y, inside);
-
+		obj->SetPosition(x, y);
+		shinebricks.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
@@ -145,7 +148,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			obj = new CCoin2(x, y+0.25, 0);
 			obj->SetPosition(x, y+0.25);
 			objects.push_back(obj);
-			//DebugOut(L"============== This line has been made \n");
+
 		}
 		else if (inside == BRICK_INSIDE_COINS) {
 			obj = new CCoin2(x , y + 0.25, 5);
@@ -184,9 +187,21 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HUD:
 	{
 		int type = (int)atof(tokens[3].c_str());
-		obj = new CHUD(x, y, type);
-		obj->SetPosition(x, y);
-		hud.push_back(obj);
+		if (type == HUD_TYPE_P)
+		{
+			obj = new CHUD(x, y, type);
+			obj->SetPosition(x, y);
+			hudp = (CHUD*)obj;
+		}
+		else if (type == HUD_TYPE_A)
+		{
+			obj = new CHUD(x, y, type);
+			obj->SetPosition(x, y);
+			huda.push_back(obj);
+		}
+
+		//obj->SetPosition(x, y);
+		//hud.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -381,6 +396,14 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
+	if (p->IsDeleted())
+	{
+		for (int i = 0; i < shinebricks.size(); i++)
+		{
+			shinebricks[i] = NULL;
+			DebugOut(L"============== This line has been made \n");
+		}
+	}
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -390,13 +413,18 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetBackBufferWidth() / 2;
 	cy -= game->GetBackBufferHeight() /1.5f;
 
-	//hud->SetPosition(cx + 120, cy + 170);
+	//
+	hudp->SetPosition(cx + 100, cy + 20);
 
+	for (int i = 0; i < huda.size(); i++)
+	{
+		huda[i]->SetPosition(50 + cx + i*10, cy + 20);
+	}
+	//
 	if (cx < 0) cx = 0;
 	if (cx > 2745) cx = 2745;
 	if (cy < -350) cy = -350;
 	CGame::GetInstance()->SetCamPos(cx,cy);
-
 	PurgeDeletedObjects();
 }
 
@@ -419,6 +447,8 @@ void CPlayScene::Clear()
 	objects.clear();
 }
 
+
+
 /*
 	Unload scene
 
@@ -432,6 +462,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
+	p = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }

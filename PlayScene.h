@@ -16,8 +16,12 @@ class CPlayScene: public CScene
 protected: 
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
-				
-	vector<LPGAMEOBJECT> hud;
+	LPGAMEOBJECT hudp;
+	LPGAMEOBJECT p;
+
+
+	vector<LPGAMEOBJECT> huda;
+
 
 	vector<LPGAMEOBJECT> objects;
 	vector<LPGAMEOBJECT> shinebricks;
@@ -39,8 +43,12 @@ public:
 	virtual void Unload();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
+	LPGAMEOBJECT GetHudP() { return hudp; }
+	LPGAMEOBJECT GetP() { return p; }
 
 	void Clear();
+
+
 	void PurgeDeletedObjects();
 
 	void HandleShineBrick();

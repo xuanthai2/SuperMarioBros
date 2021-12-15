@@ -34,6 +34,15 @@ void CHUD::Render()
 	//RenderBoundingBox();
 }
 
+void CHUD::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	
+	//SetPosition(x + 50, y + 50);
+
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
 void CHUD::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - HUD_BBOX_WIDTH / 2;

@@ -25,7 +25,7 @@ public:
 		state = HUD_STATE_OFF;
 	}
 	void Render();
-	void Update(DWORD dt) {}
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
 
