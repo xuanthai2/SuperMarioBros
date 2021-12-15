@@ -3,6 +3,9 @@
 #include "debug.h"
 #include "Game.h"
 
+
+#include "HUD.h"
+
 #include "Mario.h"
 #include "PlayScene.h"
 
@@ -10,7 +13,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
-
+	CHUD* hud = (CHUD*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetHudP();
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
@@ -29,6 +32,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->GetLevel() == MARIO_LEVEL_RACOON)
 		{
 			mario->SetState(MARIO_STATE_FLY_MAXSPEED);
+
+			hud->SetState(HUD_STATE_ON);
 		}
 		break;
 	case DIK_Z:
@@ -90,16 +95,19 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CHUD* hud = (CHUD*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetHudP();
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
 		if (game->IsKeyDown(DIK_A))
 		{
 			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+			hud->SetState(HUD_STATE_ON);
 		}
 		else
 		{
 			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			hud->SetState(HUD_STATE_OFF);
 		}
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
@@ -107,12 +115,15 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		if (game->IsKeyDown(DIK_A))
 		{
 			mario->SetState(MARIO_STATE_RUNNING_LEFT);
+			hud->SetState(HUD_STATE_ON);
 		}
 		else
 		{
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
+			hud->SetState(HUD_STATE_OFF);
 		}
 	}
 	else
 		mario->SetState(MARIO_STATE_IDLE);
+		//hud->SetState(HUD_STATE_OFF);
 }

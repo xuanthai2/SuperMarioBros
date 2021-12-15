@@ -169,7 +169,7 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	}
 	else if (e->ny > 0)
 	{
-		if (brick->GetState() == BRICK_STATE_DIE)
+		if (brick->GetState() != BRICK_STATE_LIVE)
 		{
 			e->obj->Delete();
 		}
@@ -178,7 +178,7 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	{
 		if (isAttacking)
 		{
-			if (brick->GetState() == BRICK_STATE_DIE)
+			if (brick->GetState() != BRICK_STATE_LIVE)
 			{
 				e->obj->Delete();
 			}
@@ -630,7 +630,10 @@ void CMario::OnCollisionWithP(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		e->obj->Delete();
+		if (p->GetState() == P_STATE_LIVE)
+		{
+			e->obj->Delete();
+		}
 	}
 
 }
