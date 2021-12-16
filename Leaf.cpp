@@ -6,7 +6,7 @@ void CLeaf::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_LEAF)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CLeaf::OnNoCollision(DWORD dt)

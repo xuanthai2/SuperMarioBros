@@ -12,7 +12,7 @@ CPortalmini::CPortalmini(float l, float t, float r, float b, int gx, int gy)
 
 void CPortalmini::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CPortalmini::GetBoundingBox(float& l, float& t, float& r, float& b)
